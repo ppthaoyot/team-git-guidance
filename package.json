@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "start": "vite",
+        "start:uat": "vite --mode uat",
         "build": "tsc && vite build",
         "build:dev": "tsc && vite build --mode dev",
         "build:uat": "tsc && vite build --mode uat",
