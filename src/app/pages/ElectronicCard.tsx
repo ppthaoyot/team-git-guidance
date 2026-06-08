@@ -13,7 +13,6 @@ import {
     DialogContent,
     DialogActions,
     IconButton,
-    Chip
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -92,8 +91,30 @@ const ElectronicCardPage = () => {
           }).map(s => s.schoolSubDistrict)))
         : Array.from(new Set(mockStudents.map(s => s.schoolSubDistrict)));
         
-    const plans = Array.from(new Set(mockStudents.map(s => s.coverageLimit)));
+    const schools = Array.from(new Set(mockStudents.map(s => s.schoolName)));
     const statuses = ["ปกติ", "ค้างชำระ", "ยกเลิก"];
+
+    const fieldSx = {
+        width: { xs: "100%", lg: 365 },
+        height: 48,
+        "& .MuiInputLabel-root": {
+            fontFamily: "'Prompt', 'Sarabun', sans-serif",
+            fontSize: "14px",
+            color: "#9E9E9E",
+            bgcolor: "#FFFFFF",
+            px: 0.5
+        },
+        "& .MuiSelect-select": {
+            fontFamily: "'Prompt', 'Sarabun', sans-serif",
+            fontSize: "18px",
+            fontWeight: 700,
+            color: "#212121",
+            py: "11px"
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#BDBDBD"
+        }
+    };
 
     // ฟังก์ชันจัดการเมื่อผู้ใช้งานกดปุ่ม "ค้นหา"
     const handleSearch = () => {
@@ -101,7 +122,7 @@ const ElectronicCardPage = () => {
             if (selectedProvince && student.province !== selectedProvince) return false;
             if (selectedDistrict && student.schoolDistrict !== selectedDistrict) return false;
             if (selectedSubDistrict && student.schoolSubDistrict !== selectedSubDistrict) return false;
-            if (selectedPlan && student.coverageLimit !== selectedPlan) return false;
+            if (selectedPlan && student.schoolName !== selectedPlan) return false;
             if (selectedStatus && student.paymentStatus !== selectedStatus) return false;
             return true;
         });
@@ -112,22 +133,6 @@ const ElectronicCardPage = () => {
             currentPage: 1
         }));
     };
-
-    // ฟังก์ชันล้างเงื่อนไขในฟอร์มค้นหาทั้งหมด
-    const handleClear = () => {
-        setSelectedProvince("");
-        setSelectedDistrict("");
-        setSelectedSubDistrict("");
-        setSelectedPlan("");
-        setSelectedStatus("");
-        setStudents(mockStudents);
-        setPaginated(prev => ({
-            ...prev,
-            totalAmountRecords: mockStudents.length,
-            currentPage: 1
-        }));
-    };
-
 
     // ฟังก์ชันเมื่อกดปุ่ม "Gen QR Code" เพื่อแสดงป๊อปอัปโปสเตอร์ดาวน์โหลด
     const openQrModal = (schoolName: string) => {
@@ -144,7 +149,7 @@ const ElectronicCardPage = () => {
         } else {
             setSchoolDetails({
                 subDistrict: "ก้อนแก้ว",
-                district: "เมืองฉะเชิงเทรา",
+                district: "คลองเขื่อน",
                 province: "ฉะเชิงเทรา"
             });
         }
@@ -183,15 +188,15 @@ const ElectronicCardPage = () => {
                 ctx.font = "bold 42px 'Sarabun', sans-serif";
                 ctx.fillStyle = "#ffffff";
                 ctx.textAlign = "center";
-                ctx.fillText(activeSchool, canvas.width / 2, 322);
+                ctx.fillText(activeSchool, canvas.width / 2, 405);
 
                 const qrImg = new Image();
                 qrImg.crossOrigin = "anonymous";
                 qrImg.src = qrCodeUrl;
                 qrImg.onload = () => {
-                    const qrSize = 420;
+                    const qrSize = 500;
                     const qrX = (canvas.width - qrSize) / 2;
-                    const qrY = 480;
+                    const qrY = 500;
                     ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
 
                     const dataUrl = canvas.toDataURL("image/png");
@@ -273,13 +278,8 @@ const ElectronicCardPage = () => {
             label: "แขวง/ตำบล",
         },
         {
-            name: "coverageLimit",
+            name: "planName",
             label: "แผนประกัน",
-            options: {
-                customBodyRender: (value: string) => {
-                    return `แผนความคุ้มครอง (${value} บาท)`;
-                }
-            }
         },
         {
             name: "paymentStatus",
@@ -288,13 +288,24 @@ const ElectronicCardPage = () => {
                 customBodyRender: (value: string) => {
                     const isPaid = value === "ปกติ";
                     return (
-                        <Chip
-                            label={value}
-                            color={isPaid ? "success" : value === "ค้างชำระ" ? "warning" : "error"}
-                            variant="filled"
-                            size="small"
-                            sx={{ fontWeight: "bold" }}
-                        />
+                        <Box
+                            sx={{
+                                minWidth: 120,
+                                height: 36,
+                                px: 2,
+                                borderRadius: "6px",
+                                bgcolor: isPaid ? "#D9F6DD" : value === "ค้างชำระ" ? "#FFF3CD" : "#FFE0E0",
+                                color: isPaid ? "#3B8D49" : value === "ค้างชำระ" ? "#996C00" : "#B00020",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                                fontSize: "16px",
+                                fontWeight: 600
+                            }}
+                        >
+                            {value}
+                        </Box>
                     );
                 }
             }
@@ -315,9 +326,15 @@ const ElectronicCardPage = () => {
                             onClick={() => openQrModal(value)}
                             sx={{
                                 textTransform: "none",
-                                borderRadius: 1.5,
-                                fontSize: "0.8rem",
-                                fontWeight: "bold"
+                                borderRadius: "4px",
+                                bgcolor: "#13A8E8",
+                                minWidth: 160,
+                                height: 45,
+                                fontSize: "17px",
+                                fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                                fontWeight: 500,
+                                boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
+                                "&:hover": { bgcolor: "#0C95D1" }
                             }}
                         >
                             Gen QR Code
@@ -330,155 +347,108 @@ const ElectronicCardPage = () => {
 
     return (
         <PageWrapper title="บัตรประกันภัยอิเล็กทรอนิกส์">
-            <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: "#F5F5F7", minHeight: "100vh" }}>
+            <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#F5F5F7", minHeight: "100vh" }}>
                 <Paper
                     elevation={0}
                     sx={{
-                        p: "32px 16px 48px",
+                        p: { xs: "24px 12px 36px", lg: "32px 32px 48px" },
                         bgcolor: "#FFFFFF",
-                        borderRadius: "10px",
+                        borderRadius: 0,
                         display: "flex",
                         flexDirection: "column",
                         gap: "32px",
-                        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.05)"
+                        boxShadow: "none"
                     }}
                 >
                     {/* Filter Panel */}
                     <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
                         {/* Row 1 */}
-                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", px: "16px" }}>
+                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%" }}>
                             {/* จังหวัด */}
-                            <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
-                                <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>จังหวัด</InputLabel>
+                            <FormControl sx={fieldSx}>
+                                <InputLabel>จังหวัด</InputLabel>
                                 <Select
                                     label="จังหวัด"
                                     value={selectedProvince}
                                     onChange={(e) => setSelectedProvince(e.target.value)}
-                                    sx={{
-                                        height: 48,
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        color: "#212121",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "#A6A6A6"
-                                        }
-                                    }}
+                                    sx={{ height: 48 }}
                                 >
-                                    <MenuItem value="" sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}><em>ทั้งหมด</em></MenuItem>
+                                    <MenuItem value=""><em>ทั้งหมด</em></MenuItem>
                                     {provinces.map(p => (
-                                        <MenuItem key={p} value={p} sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}>{p}</MenuItem>
+                                        <MenuItem key={p} value={p}>{p}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
 
                             {/* เขต/อำเภอ */}
-                            <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
-                                <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>เขต/อำเภอ</InputLabel>
+                            <FormControl sx={fieldSx}>
+                                <InputLabel>อำเภอ</InputLabel>
                                 <Select
-                                    label="เขต/อำเภอ"
+                                    label="อำเภอ"
                                     value={selectedDistrict}
                                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                                    sx={{
-                                        height: 48,
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        color: "#212121",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "#A6A6A6"
-                                        }
-                                    }}
+                                    sx={{ height: 48 }}
                                 >
-                                    <MenuItem value="" sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}><em>ทั้งหมด</em></MenuItem>
+                                    <MenuItem value=""><em>ทั้งหมด</em></MenuItem>
                                     {districts.map(d => (
-                                        <MenuItem key={d} value={d} sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}>{d}</MenuItem>
+                                        <MenuItem key={d} value={d}>{d}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
 
                             {/* แขวง/ตำบล */}
-                            <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
-                                <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>แขวง/ตำบล</InputLabel>
+                            <FormControl sx={fieldSx}>
+                                <InputLabel>ตำบล</InputLabel>
                                 <Select
-                                    label="แขวง/ตำบล"
+                                    label="ตำบล"
                                     value={selectedSubDistrict}
                                     onChange={(e) => setSelectedSubDistrict(e.target.value)}
-                                    sx={{
-                                        height: 48,
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        color: "#212121",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "#A6A6A6"
-                                        }
-                                    }}
+                                    sx={{ height: 48 }}
                                 >
-                                    <MenuItem value="" sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}><em>ทั้งหมด</em></MenuItem>
+                                    <MenuItem value=""><em>ทั้งหมด</em></MenuItem>
                                     {subDistricts.map(sd => (
-                                        <MenuItem key={sd} value={sd} sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}>{sd}</MenuItem>
+                                        <MenuItem key={sd} value={sd}>{sd}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
 
                             {/* แผนประกัน */}
-                            <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
-                                <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>แผนประกัน</InputLabel>
+                            <FormControl sx={fieldSx}>
+                                <InputLabel>สถานศึกษา</InputLabel>
                                 <Select
-                                    label="แผนประกัน"
+                                    label="สถานศึกษา"
                                     value={selectedPlan}
                                     onChange={(e) => setSelectedPlan(e.target.value)}
-                                    sx={{
-                                        height: 48,
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        color: "#212121",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "#A6A6A6"
-                                        }
-                                    }}
+                                    sx={{ height: 48 }}
                                 >
-                                    <MenuItem value="" sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}><em>ทั้งหมด</em></MenuItem>
-                                    {plans.map(p => (
-                                        <MenuItem key={p} value={p} sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}>
-                                            {`แผนความคุ้มครอง (${p} บาท)`}
-                                        </MenuItem>
+                                    <MenuItem value=""><em>ทั้งหมด</em></MenuItem>
+                                    {schools.map(p => (
+                                        <MenuItem key={p} value={p}>{p}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
                         </Box>
 
                         {/* Row 2 */}
-                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", alignItems: "center", px: "16px" }}>
+                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", alignItems: "center" }}>
                             {/* สถานะกรมธรรม์ */}
-                            <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
-                                <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>สถานะกรมธรรม์</InputLabel>
+                            <FormControl sx={fieldSx}>
+                                <InputLabel>สถานะกรมธรรม์</InputLabel>
                                 <Select
                                     label="สถานะกรมธรรม์"
                                     value={selectedStatus}
                                     onChange={(e) => setSelectedStatus(e.target.value)}
-                                    sx={{
-                                        height: 48,
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        color: "#212121",
-                                        "& .MuiOutlinedInput-notchedOutline": {
-                                            borderColor: "#A6A6A6"
-                                        }
-                                    }}
+                                    sx={{ height: 48 }}
                                 >
-                                    <MenuItem value="" sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}><em>ทั้งหมด</em></MenuItem>
+                                    <MenuItem value=""><em>ทั้งหมด</em></MenuItem>
                                     {statuses.map(s => (
-                                        <MenuItem key={s} value={s} sx={{ fontFamily: "TH Sarabun New", fontSize: "22px" }}>{s}</MenuItem>
+                                        <MenuItem key={s} value={s}>{s}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
 
                             {/* Buttons */}
-                            <Box sx={{ display: "flex", gap: "23px", width: { xs: "100%", lg: 365 }, justifyContent: "flex-start", height: 45 }}>
+                            <Box sx={{ display: "flex", width: { xs: "100%", lg: 365 }, justifyContent: "flex-start", height: 45 }}>
                                 <Button
                                     variant="contained"
                                     onClick={handleSearch}
@@ -489,9 +459,9 @@ const ElectronicCardPage = () => {
                                         "&:hover": {
                                             backgroundColor: "#005b90"
                                         },
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "25px",
-                                        fontWeight: "bold",
+                                        fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                                        fontSize: "18px",
+                                        fontWeight: 700,
                                         color: "#FFFFFF",
                                         borderRadius: "4px",
                                         boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.2)"
@@ -499,38 +469,62 @@ const ElectronicCardPage = () => {
                                 >
                                     ค้นหา
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={handleClear}
-                                    sx={{
-                                        height: "45px",
-                                        fontFamily: "TH Sarabun New",
-                                        fontSize: "24px",
-                                        fontWeight: "bold",
-                                        borderRadius: "4px"
-                                    }}
-                                >
-                                    ล้างเงื่อนไข
-                                </Button>
                             </Box>
                         </Box>
                     </Box>
 
                     {/* Table */}
-                    <Box sx={{ width: "100%", px: "16px" }}>
+                    <Box sx={{ width: "100%" }}>
                         <StandardDataTable
                             name="students"
-                            title={`ผลลัพธ์การค้นหา (${students.length} รายการ)`}
                             columns={columns}
                             data={students}
                             color="primary"
+                            displayToolbar={false}
                             options={{
                                 serverSide: false,
                                 rowsPerPage: 10,
                                 selectableRows: "none",
                                 download: false,
-                                print: false
+                                print: false,
+                                filter: false,
+                                search: false,
+                                viewColumns: false,
+                                responsive: "standard",
+                                textLabels: {
+                                    body: {
+                                        noMatch: "ไม่พบข้อมูล",
+                                        toolTip: "Sort",
+                                        columnHeaderTooltip: (column) => `จัดเรียงจาก ${column.label}`,
+                                    }
+                                }
+                            }}
+                            sx={{
+                                "& .MuiPaper-root": {
+                                    boxShadow: "none"
+                                },
+                                "& .MuiTableCell-head": {
+                                    height: "43px",
+                                    fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                                    fontSize: "16px",
+                                    fontWeight: 700,
+                                    bgcolor: "#007AC1 !important",
+                                    color: "#FFFFFF !important",
+                                    borderRight: "1px solid rgba(255,255,255,0.12)"
+                                },
+                                "& .MuiTableCell-body": {
+                                    height: "94px",
+                                    fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                                    fontSize: "16px",
+                                    color: "#111111",
+                                    borderBottom: "1px solid #D6D6D6"
+                                },
+                                "& .MuiTableRow-root": {
+                                    bgcolor: "#FFFFFF"
+                                },
+                                "& .MuiTableFooter-root": {
+                                    display: "none"
+                                }
                             }}
                         />
                     </Box>
@@ -544,111 +538,101 @@ const ElectronicCardPage = () => {
                 maxWidth="sm"
                 fullWidth
                 PaperProps={{
-                    sx: { borderRadius: 3, p: 1 }
+                    sx: { borderRadius: "8px", overflow: "hidden" }
                 }}
             >
-                <DialogTitle sx={{ m: 0, p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Box>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>Gen QR Code</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {activeSchool} ต.{schoolDetails.subDistrict} อ.{schoolDetails.district} จ.{schoolDetails.province}
-                        </Typography>
-                    </Box>
-                    <IconButton onClick={() => setQrModalOpen(false)}>
-                        <CloseIcon />
+                <DialogTitle
+                    sx={{
+                        m: 0,
+                        px: 4,
+                        py: 2.5,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        borderBottom: "1px solid #E0E0E0"
+                    }}
+                >
+                    <Typography sx={{ fontFamily: "'Prompt', 'Sarabun', sans-serif", fontSize: "24px", fontWeight: 500 }}>
+                        Gen QR Code
+                    </Typography>
+                    <IconButton onClick={() => setQrModalOpen(false)} sx={{ color: "#9E9E9E" }}>
+                        <CloseIcon sx={{ fontSize: 36 }} />
                     </IconButton>
                 </DialogTitle>
 
-                <DialogContent dividers sx={{ display: "flex", justifyContent: "center", bgcolor: "#f5f5f5", p: 4 }}>
-                    {/* ส่วนพรีวิวหน้าจอการ์ดโปสเตอร์ที่จะดาวน์โหลด */}
-                    <Box
-                        id="qr-poster-preview"
-                        sx={{
-                            width: "360px",
-                            height: "450px",
-                            position: "relative",
-                            backgroundImage: `url('${import.meta.env.BASE_URL}template-bg-qr-code.png')`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            borderRadius: 2,
-                            boxShadow: 3,
-                            overflow: "hidden"
-                        }}
-                    >
-                        {/* แถบแบนเนอร์แสดงชื่อโรงเรียน (Overlay) */}
+                <DialogContent sx={{ px: 4, py: 4, bgcolor: "#FFFFFF" }}>
+                    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
                         <Box
                             sx={{
-                                position: "absolute",
-                                top: "107px",
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: "240px",
+                                width: "100%",
+                                bgcolor: "#E5F6FF",
+                                borderRadius: "6px",
+                                py: 2.5,
+                                px: 2,
                                 textAlign: "center",
-                                zIndex: 2
+                                boxSizing: "border-box"
                             }}
                         >
                             <Typography
                                 sx={{
-                                    color: "#ffffff",
-                                    fontSize: "0.8rem",
-                                    fontWeight: "bold",
-                                    fontFamily: "Sarabun",
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis"
+                                    color: "#07518c",
+                                    fontSize: "28px",
+                                    lineHeight: 1.25,
+                                    fontWeight: 600,
+                                    fontFamily: "'Prompt', 'Sarabun', sans-serif"
                                 }}
                             >
                                 {activeSchool}
                             </Typography>
+                            <Typography sx={{ mt: 1, fontFamily: "'Prompt', 'Sarabun', sans-serif", fontSize: "16px", fontWeight: 500 }}>
+                                ตำบล{schoolDetails.subDistrict} อำเภอ{schoolDetails.district} จังหวัด{schoolDetails.province}
+                            </Typography>
                         </Box>
 
-                        {/* แสดง QR Code ตรงกลางโปสเตอร์ (Overlay) */}
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                top: "160px",
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: "140px",
-                                height: "140px",
-                                bgcolor: "#ffffff",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                borderRadius: 1.5,
-                                p: 1,
-                                boxShadow: 1
-                            }}
-                        >
-                            {qrCodeUrl && (
-                                <img
-                                    src={qrCodeUrl}
-                                    alt="QR Code"
-                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                                />
-                            )}
+                        <Box sx={{ width: 330, height: 330, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" style={{ width: "100%", height: "100%", objectFit: "contain" }} />}
                         </Box>
+
+                        <Typography sx={{ fontFamily: "'Prompt', 'Sarabun', sans-serif", fontSize: "16px", color: "#777777" }}>
+                            สแกน QR Code เพื่อดาวน์โหลดบัตรประกันนักเรียน
+                        </Typography>
                     </Box>
                 </DialogContent>
 
-                <DialogActions sx={{ p: 2, gap: 1 }}>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        startIcon={<ShareIcon />}
-                        onClick={handleShare}
-                        sx={{ borderRadius: 2, flex: 1 }}
-                    >
-                        แชร์ลิงก์
-                    </Button>
+                <DialogActions sx={{ px: 4, pb: 3, pt: 0, gap: 4 }}>
                     <Button
                         variant="contained"
                         color="primary"
                         startIcon={<DownloadIcon />}
                         onClick={downloadPoster}
-                        sx={{ borderRadius: 2, flex: 1 }}
+                        sx={{
+                            borderRadius: "4px",
+                            flex: 1,
+                            height: 48,
+                            bgcolor: "#13A8E8",
+                            fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                            fontSize: "18px",
+                            "&:hover": { bgcolor: "#0C95D1" }
+                        }}
                     >
                         ดาวน์โหลดรูปภาพ
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        startIcon={<ShareIcon />}
+                        onClick={handleShare}
+                        sx={{
+                            borderRadius: "4px",
+                            flex: 1,
+                            height: 48,
+                            borderColor: "#007AC1",
+                            color: "#007AC1",
+                            fontFamily: "'Prompt', 'Sarabun', sans-serif",
+                            fontSize: "18px",
+                            "&:hover": { borderColor: "#005b90", bgcolor: "#F2FBFF" }
+                        }}
+                    >
+                        แชร์
                     </Button>
                 </DialogActions>
             </Dialog>

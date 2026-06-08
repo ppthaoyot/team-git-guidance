@@ -1,4 +1,5 @@
 import {
+    Box,
     CircularProgress,
     PaletteColor,
     PaletteOptions,
@@ -7,15 +8,12 @@ import {
     ThemeProvider,
     Typography,
     createTheme,
-    styled,
     useTheme,
 } from "@mui/material";
 import { Property } from "csstype";
 import MUIDataTable, { MUIDataTableOptions, MUIDataTableProps } from "mui-datatables";
 import React from "react";
 import { PaginationResultDto, PaginationSortableDto } from "../../types";
-
-const StyledMUIDataTable = styled(MUIDataTable)();
 
 type StandardDataTableProps = {
     /**
@@ -289,8 +287,8 @@ const StandardDataTable = ({
 
     return (
         <ThemeProvider theme={tableTheme}>
-            <div id={`${name}-data-table`}>
-                <StyledMUIDataTable
+            <Box id={`${name}-data-table`} sx={sx}>
+                <MUIDataTable
                     options={{ ...defaultOptions, ...options }}
                     {...muiDataTableProps}
                     title={
@@ -301,9 +299,8 @@ const StandardDataTable = ({
                             </Typography>
                         )
                     }
-                    sx={sx}
                 />
-            </div>
+            </Box>
         </ThemeProvider>
     );
 };

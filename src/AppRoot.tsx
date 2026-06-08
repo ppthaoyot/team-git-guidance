@@ -59,7 +59,7 @@ const AppRoot = () => {
             <ReduxProvider>
                 <QueryClientProvider client={queryClient}>
                     <App />
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    {showReactQueryDevtools && <ReactQueryDevtools initialIsOpen={false} />}
                 </QueryClientProvider>
             </ReduxProvider>
         </AuthProvider>
@@ -67,3 +67,4 @@ const AppRoot = () => {
 };
 
 export default AppRoot;
+    const showReactQueryDevtools = window.location.search.includes("debugDevtools=true");

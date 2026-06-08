@@ -4,11 +4,7 @@ import {
     Box,
     Paper,
     Button,
-    Typography,
-    AppBar,
-    IconButton
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DownloadIcon from "@mui/icons-material/Download";
 import Swal from "sweetalert2";
 
@@ -149,37 +145,24 @@ const StudentCard = () => {
         <Box
             sx={{
                 minHeight: "100vh",
-                bgcolor: "#FFFFFF",
+                bgcolor: "#DDF9FF",
+                background: "linear-gradient(180deg, #E9FDFF 0%, #C7F3FF 100%)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 fontFamily: "Sarabun",
-                pb: "60px"
+                pb: "78px"
             }}
         >
             {/* แทบเมนูด้านบนของหน้าจอบนมือถือ */}
-            <AppBar position="static" sx={{ bgcolor: "#07518c", boxShadow: 1 }}>
-                <Box sx={{ p: 2, display: "flex", alignItems: "center" }}>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={() => navigate(`/student/search?school=${encodeURIComponent(student.schoolName)}`)}
-                        sx={{ mr: 1 }}
-                    >
-                        <ArrowBackIcon />
-                    </IconButton>
-                    <Typography variant="h6" sx={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-                        บัตรประกันภัยอุบัติเหตุของท่าน
-                    </Typography>
-                </Box>
-            </AppBar>
-
             {/* กล่องบรรจุตัวการ์ดและการจัดการสำหรับโมบาย */}
             <Box
                 sx={{
-                    width: "92%",
+                    width: "100%",
                     maxWidth: "500px",
-                    mt: 4,
+                    px: 2,
+                    pt: 6,
+                    boxSizing: "border-box",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -301,6 +284,14 @@ const StudentCard = () => {
                     }}
                 >
                     ดาวน์โหลดภาพบัตรประกันภัย
+                </Button>
+                <Button
+                    fullWidth
+                    variant="text"
+                    onClick={() => navigate(`/student/search?school=${encodeURIComponent(student.schoolName)}&citizenId=${student.citizenId}`)}
+                    sx={{ color: "#07518c", fontWeight: 700 }}
+                >
+                    กลับไปหน้าค้นหา
                 </Button>
             </Box>
 

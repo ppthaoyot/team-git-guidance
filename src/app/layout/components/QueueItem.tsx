@@ -11,8 +11,9 @@ dayjs.extend(relativetime);
 const QueueItem = () => {
     const { userProfile } = useAuth();
     const userId = userProfile?.userId;
+    const numericUserId = Number(userId);
 
-    if (userId == undefined) return null;
+    if (userId == undefined || Number.isNaN(numericUserId)) return null;
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -29,9 +30,9 @@ const QueueItem = () => {
         window.open(url, "_blank");
     };
 
-    const { data: queueCount, isLoading: queueCountLoading } = useGetQueueCountByUserId(userId);
+    const { data: queueCount, isLoading: queueCountLoading } = useGetQueueCountByUserId(numericUserId);
     const { data: queueNotice, isLoading: queueNoticeLoading } = useGetQueueNotificationByUserId(
-        userId,
+        numericUserId,
         Boolean(anchorEl)
     );
 

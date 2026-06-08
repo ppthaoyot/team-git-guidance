@@ -22,6 +22,10 @@ const CheckArray = (source: string | string[] | undefined | null): string[] => {
     return [source];
 };
 
+const isPublicStudentRoute = () => {
+    return window.location.pathname.startsWith("/student/search") || window.location.pathname.startsWith("/student/card");
+};
+
 export const AuthProvider = ({ children, oidcUserManager }: AuthProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [authTokens, setAuthTokens] = useState<string>("");
@@ -112,6 +116,10 @@ export const AuthProvider = ({ children, oidcUserManager }: AuthProviderProps) =
     }, [oidcUserManager, signinRedirectWithGuard]);
 
     useEffect(() => {
+        if (isPublicStudentRoute()) {
+            return;
+        }
+
         const isDemoMode = window.location.hostname.includes("github.io") || window.location.search.includes("demo=true");
         if (isDemoMode) {
             return;
@@ -159,6 +167,11 @@ export const AuthProvider = ({ children, oidcUserManager }: AuthProviderProps) =
 
     useEffect(() => {
         const processGetUser = async () => {
+            if (isPublicStudentRoute()) {
+                setLogout();
+                return;
+            }
+
             const isDemoMode = window.location.hostname.includes("github.io") || window.location.search.includes("demo=true");
             if (isDemoMode) {
                 setIsAuthenticated(true);
