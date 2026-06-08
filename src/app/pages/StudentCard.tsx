@@ -149,7 +149,7 @@ const StudentCard = () => {
         <Box
             sx={{
                 minHeight: "100vh",
-                bgcolor: "#f5f8fa",
+                bgcolor: "#FFFFFF",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -216,21 +216,21 @@ const StudentCard = () => {
                     >
                         {/* ข้อความข้อมูลส่วนตัว (ซ้อนทับตามพิกัดร้อยละเทียบจากขนาดการ์ด) */}
                         <Box sx={{ position: "absolute", left: "9.5%", top: "27.5%", display: "flex", flexDirection: "column", gap: "2%" }}>
-                            <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                            <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                 เลขอ้างอิง : <span style={{ fontWeight: "normal" }}>{student.refNo}</span>
-                            </Typography>
-                            <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
+                            </Box>
+                            <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
                                 ผู้ถือกรมธรรม์ : <span style={{ fontWeight: "normal" }}>{student.schoolName}</span>
-                            </Typography>
-                            <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
+                            </Box>
+                            <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
                                 ระดับการศึกษา : <span style={{ fontWeight: "normal" }}>{student.gradeLevel}</span>
-                            </Typography>
-                            <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
+                            </Box>
+                            <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
                                 ชื่อผู้เอาประกัน : <span style={{ fontWeight: "normal" }}>{student.title}{student.firstName} {student.lastName}</span>
-                            </Typography>
-                            <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
+                            </Box>
+                            <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "4px" }}>
                                 ผู้บริหารโครงการ : <span style={{ fontWeight: "normal", fontSize: "0.9em" }}>บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด</span>
-                            </Typography>
+                            </Box>
                         </Box>
 
                         {/* ข้อความแสดงวงเงิน (กึ่งกลางการ์ด) */}
@@ -244,9 +244,9 @@ const StudentCard = () => {
                                 textAlign: "center"
                             }}
                         >
-                            <Typography sx={{ color: "#07518c", fontSize: "1.25em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                            <Box sx={{ color: "#07518c", fontSize: "1.25em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                 วงเงินค่ารักษาพยาบาล : {student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง
-                            </Typography>
+                            </Box>
                         </Box>
 
                         {/* คำชี้แจงค่ารักษาเพิ่มเติม */}
@@ -260,26 +260,26 @@ const StudentCard = () => {
                                 textAlign: "center"
                             }}
                         >
-                            <Typography sx={{ color: "#07518c", fontSize: "0.7em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                            <Box sx={{ color: "#07518c", fontSize: "0.7em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                 (กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย {student.compensationOPDClinic} บาท OPD {student.compensationOPDHospital} บาท IPD {student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)
-                            </Typography>
+                            </Box>
                         </Box>
 
                         {/* วันเริ่มคุ้มครอง และวันหมดอายุ */}
                         <Box sx={{ position: "absolute", bottom: "16.5%", left: "21%", right: "8%", display: "flex", justifyContent: "space-between" }}>
-                            <Typography sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                            <Box sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                 วันที่มีผลบังคับ : <span style={{ fontWeight: "normal" }}>{student.effectiveDate}</span>
-                            </Typography>
-                            <Typography sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun", mr: "4%" }}>
+                            </Box>
+                            <Box sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun", mr: "4%" }}>
                                 วันที่สิ้นสุด : <span style={{ fontWeight: "normal" }}>{student.expiryDate}</span>
-                            </Typography>
+                            </Box>
                         </Box>
 
                         {/* ผู้รับประกัน (ล่างซ้าย) */}
                         <Box sx={{ position: "absolute", bottom: "6.5%", left: "4.5%", width: "70%" }}>
-                            <Typography sx={{ color: "#333333", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                            <Box sx={{ color: "#333333", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                 บริษัทผู้รับประกัน : {student.insurer}
-                            </Typography>
+                            </Box>
                         </Box>
                     </Box>
                 </Paper>

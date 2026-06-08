@@ -6,11 +6,9 @@ import {
     TextField,
     Button,
     Typography,
-    AppBar,
-    IconButton
+    AppBar
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DownloadIcon from "@mui/icons-material/Download";
 import ShareIcon from "@mui/icons-material/Share";
 import Swal from "sweetalert2";
@@ -109,13 +107,6 @@ const StudentSearch = () => {
                 confirmButtonColor: "#03A9F4"
             });
         }
-    };
-
-    // ฟังก์ชันย้อนกลับไปหน้าค้นหาใหม่
-    const handleBack = () => {
-        setHasSearched(false);
-        setFoundStudent(null);
-        setCitizenId("");
     };
 
     // ฟังก์ชันประมวลผลการวาดรายละเอียดลงบนบัตรเปล่าผ่าน Canvas และสั่งดาวน์โหลด
@@ -251,7 +242,7 @@ const StudentSearch = () => {
         <Box
             sx={{
                 minHeight: "100vh",
-                background: "linear-gradient(180deg, #E8F5FF 0%, #CBE8FF 100%)",
+                bgcolor: "#FFFFFF",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -427,16 +418,6 @@ const StudentSearch = () => {
                             width: "100%"
                         }}
                     >
-                        {/* ปุ่มย้อนกลับสไตล์สีฟ้า */}
-                        <Box sx={{ alignSelf: "flex-start", display: "flex", alignItems: "center" }}>
-                            <IconButton onClick={handleBack} sx={{ color: "#07518c" }}>
-                                <ArrowBackIcon />
-                            </IconButton>
-                            <Typography variant="body2" onClick={handleBack} sx={{ fontWeight: "bold", color: "#07518c", cursor: "pointer" }}>
-                                ล้างผลลัพธ์และค้นหาใหม่
-                            </Typography>
-                        </Box>
-
                         {/* การ์ดดิจิทัลซ้อนตัวอักษร 16(New) */}
                         <Paper
                             elevation={4}
@@ -467,52 +448,52 @@ const StudentSearch = () => {
                             >
                                 {/* ข้อมูลข้อความต่างๆ ซ้อนทับการ์ด */}
                                 <Box sx={{ position: "absolute", left: "9.5%", top: "27.5%", display: "flex", flexDirection: "column", gap: "2%" }}>
-                                    <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                                    <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                         เลขอ้างอิง : <span style={{ fontWeight: "normal" }}>{foundStudent.refNo}</span>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
+                                    </Box>
+                                    <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
                                         ผู้ถือกรมธรรม์ : <span style={{ fontWeight: "normal" }}>{foundStudent.schoolName}</span>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
+                                    </Box>
+                                    <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
                                         ระดับการศึกษา : <span style={{ fontWeight: "normal" }}>{foundStudent.gradeLevel}</span>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
+                                    </Box>
+                                    <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
                                         ชื่อผู้เอาประกัน : <span style={{ fontWeight: "normal" }}>{foundStudent.title}{foundStudent.firstName} {foundStudent.lastName}</span>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
+                                    </Box>
+                                    <Box sx={{ fontSize: "0.95em", fontWeight: "bold", fontFamily: "Sarabun", mt: "3px" }}>
                                         ผู้บริหารโครงการ : <span style={{ fontWeight: "normal", fontSize: "0.9em" }}>บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด</span>
-                                    </Typography>
+                                    </Box>
                                 </Box>
 
                                 {/* วงเงินคุ้มครอง */}
                                 <Box sx={{ position: "absolute", top: "69.5%", left: "50%", transform: "translateX(-50%)", width: "90%", textAlign: "center" }}>
-                                    <Typography sx={{ color: "#07518c", fontSize: "1.2em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                                    <Box sx={{ color: "#07518c", fontSize: "1.2em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                         วงเงินค่ารักษาพยาบาล : {foundStudent.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง
-                                    </Typography>
+                                    </Box>
                                 </Box>
 
                                 {/* ข้อความเพิ่มเติม */}
                                 <Box sx={{ position: "absolute", top: "76.5%", left: "50%", transform: "translateX(-50%)", width: "90%", textAlign: "center" }}>
-                                    <Typography sx={{ color: "#07518c", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                                    <Box sx={{ color: "#07518c", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                         (กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย {foundStudent.compensationOPDClinic} บาท OPD {foundStudent.compensationOPDHospital} บาท IPD {foundStudent.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)
-                                    </Typography>
+                                    </Box>
                                 </Box>
 
                                 {/* วันเริ่มต้นคุ้มครอง และวันหมดอายุ */}
                                 <Box sx={{ position: "absolute", bottom: "16.5%", left: "21%", right: "8%", display: "flex", justifyContent: "space-between" }}>
-                                    <Typography sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                                    <Box sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                         วันที่มีผลบังคับ : <span style={{ fontWeight: "normal" }}>{foundStudent.effectiveDate}</span>
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun", mr: "4%" }}>
+                                    </Box>
+                                    <Box sx={{ fontSize: "0.85em", fontWeight: "bold", fontFamily: "Sarabun", mr: "4%" }}>
                                         วันที่สิ้นสุด : <span style={{ fontWeight: "normal" }}>{foundStudent.expiryDate}</span>
-                                    </Typography>
+                                    </Box>
                                 </Box>
 
                                 {/* ผู้รับประกัน */}
                                 <Box sx={{ position: "absolute", bottom: "6.5%", left: "4.5%", width: "70%" }}>
-                                    <Typography sx={{ color: "#333333", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
+                                    <Box sx={{ color: "#333333", fontSize: "0.68em", fontWeight: "bold", fontFamily: "Sarabun" }}>
                                         บริษัทผู้รับประกัน : {foundStudent.insurer}
-                                    </Typography>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Paper>
