@@ -112,6 +112,11 @@ export const AuthProvider = ({ children, oidcUserManager }: AuthProviderProps) =
     }, [oidcUserManager, signinRedirectWithGuard]);
 
     useEffect(() => {
+        const isDemoMode = window.location.hostname.includes("github.io") || window.location.search.includes("demo=true");
+        if (isDemoMode) {
+            return;
+        }
+
         const onAccessTokenExpired = async () => {
             oidcUserManager.removeUser();
             oidcUserManager.clearStaleState();
@@ -154,6 +159,23 @@ export const AuthProvider = ({ children, oidcUserManager }: AuthProviderProps) =
 
     useEffect(() => {
         const processGetUser = async () => {
+            const isDemoMode = window.location.hostname.includes("github.io") || window.location.search.includes("demo=true");
+            if (isDemoMode) {
+                setIsAuthenticated(true);
+                setAuthTokens("demo-token");
+                setRoles(["teacher"]);
+                setPermissions([]);
+                setUserProfile({
+                    userId: "demo-id",
+                    userName: "ครูผู้ประสานงาน (Demo)",
+                    email: "demo@siamsmile.co.th",
+                    fullName: "ครูผู้ประสานงาน (Demo)",
+                    firstName: "ครูผู้ประสานงาน",
+                    lastName: "(Demo)",
+                } as any);
+                return;
+            }
+
             const user = await oidcUserManager.getUser();
             if (user) {
                 clearAuthRedirectInProgress();

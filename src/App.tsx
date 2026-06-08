@@ -35,7 +35,7 @@ function App() {
     const routeObjects = CombineRouteConfig.map((route) => createRouteObject(route, queryClient));
 
     const router = createBrowserRouter(routeObjects, {
-        basename: "/",
+        basename: window.location.hostname.includes("github.io") ? "/pa-student-card" : "/",
     });
 
     return <RouterProvider router={router} />;
