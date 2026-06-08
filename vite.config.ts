@@ -105,6 +105,7 @@ export default defineConfig(({ command, mode }) => {
                     index: "./index.html",
                     callback: "./callback.html",
                     "silent-callback": "./silent-callback.html",
+                    "404": "./404.html",
                 },
                 output: {
                     // manualChunks,
