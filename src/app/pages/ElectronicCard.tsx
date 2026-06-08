@@ -107,7 +107,7 @@ const ElectronicCardPage = () => {
         "& .MuiSelect-select": {
             fontFamily: "'Prompt', 'Sarabun', sans-serif",
             fontSize: "18px",
-            fontWeight: 700,
+            fontWeight: 400,
             color: "#212121",
             py: "11px"
         },
@@ -312,7 +312,7 @@ const ElectronicCardPage = () => {
         },
         {
             name: "schoolName",
-            label: "ดูรายละเอียด",
+            label: "",
             options: {
                 filter: false,
                 sort: false,

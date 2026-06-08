@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
@@ -42,10 +42,56 @@ const getSchoolSubtitle = (schoolName: string) => {
 
 const fullName = (student: Student) => `${student.title}${student.firstName} ${student.lastName}`;
 
+const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student: Student) => {
+    ctx.clearRect(0, 0, 838, 531);
+    ctx.drawImage(img, 0, 0);
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "left";
+
+    const setFont = (size: number, isBold = false) => {
+        ctx.font = `${isBold ? "bold" : "normal"} ${size}px 'Sarabun', sans-serif`;
+    };
+
+    const xLeft = 80;
+    setFont(15, true);
+    ctx.fillText(`เลขอ้างอิง : ${student.refNo}`, xLeft, 150);
+    ctx.fillText(`ผู้ถือกรมธรรม์ : ${student.schoolName}`, xLeft, 192);
+    ctx.fillText(`ระดับการศึกษา : ${student.gradeLevel}`, xLeft, 234);
+    ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 276);
+    ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#07518c";
+    setFont(21, true);
+    ctx.fillText(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 419, 368);
+
+    setFont(12.5, true);
+    ctx.fillText(
+        `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
+        419,
+        405
+    );
+
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "left";
+    setFont(14.5, true);
+    ctx.fillText(`วันที่มีผลบังคับ : ${student.effectiveDate}`, 180, 446);
+    ctx.fillText(`วันที่สิ้นสุด : ${student.expiryDate}`, 425, 446);
+
+    ctx.fillStyle = "#333333";
+    setFont(11.5, true);
+    ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 498);
+};
+
+const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student: Student) => {
+    await document.fonts?.ready;
+    drawCard(ctx, img, student);
+};
+
 const drawCardToCanvas = (student: Student, onComplete: () => void) => {
     const img = new Image();
     img.src = `${import.meta.env.BASE_URL}template-card.png`;
-    img.onload = () => {
+    img.onload = async () => {
         const canvas = document.createElement("canvas");
         canvas.width = 838;
         canvas.height = 531;
@@ -53,43 +99,7 @@ const drawCardToCanvas = (student: Student, onComplete: () => void) => {
 
         if (!ctx) return;
 
-        ctx.drawImage(img, 0, 0);
-        ctx.fillStyle = "#000000";
-        ctx.textAlign = "left";
-
-        const setFont = (size: number, isBold = false) => {
-            ctx.font = `${isBold ? "bold" : "normal"} ${size}px 'Sarabun', sans-serif`;
-        };
-
-        const xLeft = 80;
-        setFont(15, true);
-        ctx.fillText(`เลขอ้างอิง : ${student.refNo}`, xLeft, 150);
-        ctx.fillText(`ผู้ถือกรมธรรม์ : ${student.schoolName}`, xLeft, 192);
-        ctx.fillText(`ระดับการศึกษา : ${student.gradeLevel}`, xLeft, 234);
-        ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 276);
-        ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
-
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#07518c";
-        setFont(21, true);
-        ctx.fillText(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, canvas.width / 2, 368);
-
-        setFont(12.5, true);
-        ctx.fillText(
-            `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
-            canvas.width / 2,
-            405
-        );
-
-        ctx.fillStyle = "#000000";
-        ctx.textAlign = "left";
-        setFont(14.5, true);
-        ctx.fillText(`วันที่มีผลบังคับ : ${student.effectiveDate}`, 180, 446);
-        ctx.fillText(`วันที่สิ้นสุด : ${student.expiryDate}`, 425, 446);
-
-        ctx.fillStyle = "#333333";
-        setFont(11.5, true);
-        ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 498);
+        await drawCardWithFonts(ctx, img, student);
 
         const dataUrl = canvas.toDataURL("image/png");
         const link = document.createElement("a");
@@ -108,46 +118,46 @@ const drawCardToCanvas = (student: Student, onComplete: () => void) => {
     };
 };
 
-const CardPreview = ({ student }: { student: Student }) => (
-    <Paper
-        elevation={4}
+const CardPreview = ({ student }: { student: Student }) => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+    useEffect(() => {
+        if (!canvasRef.current) return;
+
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const img = new Image();
+        img.src = `${import.meta.env.BASE_URL}template-card.png`;
+        img.onload = () => {
+            void drawCardWithFonts(ctx, img, student);
+        };
+    }, [student]);
+
+    return (
+        <Box
         sx={{
             width: "100%",
             maxWidth: 400,
-            aspectRatio: "838 / 531",
-            backgroundImage: `url('${import.meta.env.BASE_URL}template-card.png')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
             borderRadius: "8px",
-            position: "relative",
             overflow: "hidden",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)"
         }}
     >
-        <Box sx={{ position: "absolute", inset: 0, fontSize: "clamp(7px, 2.38vw, 12.2px)", color: "#000000", lineHeight: 1.22 }}>
-            <Box sx={{ position: "absolute", left: "9.5%", top: "27.5%", display: "flex", flexDirection: "column", gap: "0.34em", fontFamily: "Sarabun" }}>
-                <Box sx={{ fontWeight: 700 }}>เลขอ้างอิง : <Box component="span" sx={{ fontWeight: 400 }}>{student.refNo}</Box></Box>
-                <Box sx={{ fontWeight: 700 }}>ผู้ถือกรมธรรม์ : <Box component="span" sx={{ fontWeight: 400 }}>{student.schoolName}</Box></Box>
-                <Box sx={{ fontWeight: 700 }}>ระดับการศึกษา : <Box component="span" sx={{ fontWeight: 400 }}>{student.gradeLevel}</Box></Box>
-                <Box sx={{ fontWeight: 700 }}>ชื่อผู้เอาประกัน : <Box component="span" sx={{ fontWeight: 400 }}>{fullName(student)}</Box></Box>
-                <Box sx={{ fontWeight: 700 }}>ผู้บริหารโครงการ : <Box component="span" sx={{ fontWeight: 400, fontSize: "0.92em" }}>บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด</Box></Box>
-            </Box>
-            <Box sx={{ position: "absolute", top: "69%", left: "50%", transform: "translateX(-50%)", width: "90%", textAlign: "center", color: "#07518c", fontFamily: "Sarabun", fontSize: "1.18em", fontWeight: 700 }}>
-                วงเงินค่ารักษาพยาบาล : {student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง
-            </Box>
-            <Box sx={{ position: "absolute", top: "76%", left: "50%", transform: "translateX(-50%)", width: "90%", textAlign: "center", color: "#07518c", fontFamily: "Sarabun", fontSize: "0.67em", fontWeight: 700 }}>
-                (กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย {student.compensationOPDClinic} บาท OPD {student.compensationOPDHospital}บาท IPD {student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)
-            </Box>
-            <Box sx={{ position: "absolute", bottom: "16.5%", left: "21%", right: "8%", display: "flex", justifyContent: "space-between", fontFamily: "Sarabun", fontSize: "0.82em", fontWeight: 700 }}>
-                <Box>วันที่มีผลบังคับ : <Box component="span" sx={{ fontWeight: 400 }}>{student.effectiveDate}</Box></Box>
-                <Box>วันที่สิ้นสุด : <Box component="span" sx={{ fontWeight: 400 }}>{student.expiryDate}</Box></Box>
-            </Box>
-            <Box sx={{ position: "absolute", bottom: "6.5%", left: "4.5%", width: "70%", color: "#333333", fontFamily: "Sarabun", fontSize: "0.67em", fontWeight: 700 }}>
-                บริษัทผู้รับประกัน : {student.insurer}
-            </Box>
+            <canvas
+                ref={canvasRef}
+                width={838}
+                height={531}
+                style={{
+                    width: "100%",
+                    height: "auto",
+                    display: "block"
+                }}
+            />
         </Box>
-    </Paper>
-);
+    );
+};
 
 const DetailRow = ({ label, value, accent = false }: { label: string; value: React.ReactNode; accent?: boolean }) => (
     <Box sx={{ display: "grid", gridTemplateColumns: "132px 1fr", gap: 1, alignItems: "start", py: 0.15 }}>
