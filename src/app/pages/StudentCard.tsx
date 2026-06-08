@@ -13,6 +13,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import Swal from "sweetalert2";
 
 import { searchStudents, Student } from "../modules/_common/mockStudentData";
+import MobileFooter from "../modules/_common/components/MobileFooter";
 
 /**
  * หน้าจอแสดงบัตรประกันภัยอุบัติเหตุส่วนบุคคล (PA) แบบดิจิทัลสำหรับนักเรียน (Mobile Web View - Public Route)
@@ -152,7 +153,8 @@ const StudentCard = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                fontFamily: "Sarabun"
+                fontFamily: "Sarabun",
+                pb: "60px"
             }}
         >
             {/* แทบเมนูด้านบนของหน้าจอบนมือถือ */}
@@ -301,6 +303,9 @@ const StudentCard = () => {
                     ดาวน์โหลดภาพบัตรประกันภัย
                 </Button>
             </Box>
+
+            {/* Mobile Footer */}
+            <MobileFooter />
         </Box>
     );
 };

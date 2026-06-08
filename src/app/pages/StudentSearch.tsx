@@ -18,6 +18,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Swal from "sweetalert2";
 
 import { searchStudents, Student } from "../modules/_common/mockStudentData";
+import MobileFooter from "../modules/_common/components/MobileFooter";
 
 // --- อินเตอร์เฟสสำหรับควบคุมการแสดงผลของแต่ละแท็บ ---
 interface TabPanelProps {
@@ -118,7 +119,8 @@ const StudentSearch = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                fontFamily: "Sarabun"
+                fontFamily: "Sarabun",
+                pb: "60px"
             }}
         >
             {/* ส่วนหัวของแอปพลิเคชันมือถือ */}
@@ -352,6 +354,9 @@ const StudentSearch = () => {
                     </Paper>
                 </Box>
             )}
+
+            {/* Mobile Footer */}
+            <MobileFooter />
         </Box>
     );
 };
