@@ -128,43 +128,6 @@ const ElectronicCardPage = () => {
         }));
     };
 
-    // ฟังก์ชันส่งออกข้อมูลเป็น CSV (เปิดใน Excel ได้ถูกต้อง)
-    const handleExportExcel = () => {
-        const headers = [
-            "เลขที่ Application",
-            "ชื่อสถานศึกษา",
-            "จังหวัด",
-            "เขต/อำเภอ",
-            "แขวง/ตำบล",
-            "แผนประกัน",
-            "สถานะกรมธรรม์"
-        ];
-        
-        const rows = students.map(s => [
-            s.applicationNo,
-            s.schoolName,
-            s.province,
-            s.schoolDistrict,
-            s.schoolSubDistrict,
-            `แผนความคุ้มครอง (${s.coverageLimit} บาท)`,
-            s.paymentStatus
-        ]);
-        
-        // \ufeff enables UTF-8 BOM so Excel opens Thai characters correctly
-        const csvContent = "\ufeff" + [
-            headers.map(h => `"${h.replace(/"/g, '""')}"`).join(","),
-            ...rows.map(row => row.map(cell => `"${(cell || "").toString().replace(/"/g, '""')}"`).join(","))
-        ].join("\n");
-        
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "รายงานบัตรประกันภัยอิเล็กทรอนิกส์.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
 
     // ฟังก์ชันเมื่อกดปุ่ม "Gen QR Code" เพื่อแสดงป๊อปอัปโปสเตอร์ดาวน์โหลด
     const openQrModal = (schoolName: string) => {
@@ -380,33 +343,10 @@ const ElectronicCardPage = () => {
                         boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.05)"
                     }}
                 >
-                    {/* Excel Row */}
-                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
-                        <Button
-                            variant="contained"
-                            onClick={handleExportExcel}
-                            sx={{
-                                width: "200px",
-                                height: "45px",
-                                backgroundColor: "#388E3C",
-                                "&:hover": {
-                                    backgroundColor: "#2E7D32"
-                                },
-                                fontFamily: "TH Sarabun New",
-                                fontSize: "24px",
-                                fontWeight: "bold",
-                                borderRadius: "4px",
-                                textTransform: "none"
-                            }}
-                        >
-                            Excel
-                        </Button>
-                    </Box>
-
                     {/* Filter Panel */}
                     <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
                         {/* Row 1 */}
-                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%" }}>
+                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", px: "16px" }}>
                             {/* จังหวัด */}
                             <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
                                 <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>จังหวัด</InputLabel>
@@ -511,7 +451,7 @@ const ElectronicCardPage = () => {
                         </Box>
 
                         {/* Row 2 */}
-                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", alignItems: "center" }}>
+                        <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: "32px", width: "100%", alignItems: "center", px: "16px" }}>
                             {/* สถานะกรมธรรม์ */}
                             <FormControl sx={{ width: { xs: "100%", lg: 365 }, height: 48 }}>
                                 <InputLabel sx={{ fontFamily: "TH Sarabun New", fontSize: "20px", fontWeight: "bold", color: "#A6A6A6" }}>สถานะกรมธรรม์</InputLabel>
@@ -578,7 +518,7 @@ const ElectronicCardPage = () => {
                     </Box>
 
                     {/* Table */}
-                    <Box sx={{ width: "100%", mt: 1 }}>
+                    <Box sx={{ width: "100%", px: "16px" }}>
                         <StandardDataTable
                             name="students"
                             title={`ผลลัพธ์การค้นหา (${students.length} รายการ)`}
@@ -589,8 +529,8 @@ const ElectronicCardPage = () => {
                                 serverSide: false,
                                 rowsPerPage: 10,
                                 selectableRows: "none",
-                                download: true,
-                                print: true
+                                download: false,
+                                print: false
                             }}
                         />
                     </Box>
