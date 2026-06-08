@@ -1,0 +1,61 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. Run Dev Server",
+            "type": "shell",
+            "command": "npm start",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "2. Run API Codegen (NSwag)",
+            "type": "shell",
+            "command": "npm run codegen",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "3. Lint & Fix Code Formatting",
+            "type": "shell",
+            "command": "npm run lint:fix",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "4. Build for Development",
+            "type": "shell",
+            "command": "npm run build:dev",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "5. Build for UAT",
+            "type": "shell",
+            "command": "npm run build:uat",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "6. Build for Production",
+            "type": "shell",
+            "command": "npm run build:prod",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
