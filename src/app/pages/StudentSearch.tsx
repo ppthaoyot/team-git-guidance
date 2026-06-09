@@ -131,9 +131,16 @@ const drawCardToCanvas = (student: Student, onComplete: () => void) => {
     };
 };
 
-const CardPreview = ({ student }: { student: Student }) => {
+const CardPreview = ({
+    student,
+    onZoom,
+    onImageReady,
+}: {
+    student: Student;
+    onZoom?: () => void;
+    onImageReady?: (src: string) => void;
+}) => {
     const [imgSrc, setImgSrc] = useState<string>("");
-    const [zoomOpen, setZoomOpen] = useState(false);
 
     useEffect(() => {
         const img = new Image();
@@ -148,160 +155,37 @@ const CardPreview = ({ student }: { student: Student }) => {
             void drawCardWithFonts(ctx, img, student).then(() => {
                 const dataUrl = canvas.toDataURL("image/png");
                 setImgSrc(dataUrl);
+                onImageReady?.(dataUrl);
             });
         };
     }, [student]);
 
     return (
-        <>
-            {/* Card Preview with Zoom Button */}
-            <Box
-                sx={{
-                    width: "100%",
-                    maxWidth: 510,
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                    bgcolor: "#FFFFFF",
-                    position: "relative",
-                    cursor: imgSrc ? "pointer" : "default",
-                }}
-                onClick={() => imgSrc && setZoomOpen(true)}
-            >
-                {imgSrc ? (
-                    <>
-                        <img
-                            src={imgSrc}
-                            alt="Digital Insurance Card"
-                            style={{
-                                width: "100%",
-                                height: "auto",
-                                display: "block",
-                            }}
-                        />
-                        {/* Zoom Overlay Button */}
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                bottom: 8,
-                                right: 8,
-                                width: 36,
-                                height: 36,
-                                borderRadius: "50%",
-                                bgcolor: "rgba(0, 122, 193, 0.85)",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                                transition: "all 0.2s",
-                                "&:hover": {
-                                    bgcolor: "rgba(0, 122, 193, 1)",
-                                    transform: "scale(1.1)",
-                                },
-                            }}
-                        >
-                            <ZoomInIcon sx={{ color: "#FFFFFF", fontSize: 22 }} />
-                        </Box>
-                    </>
-                ) : (
-                    <Box sx={{ width: "100%", height: 0, pb: "63.36%" }} />
-                )}
-            </Box>
-
-            {/* Fullscreen Landscape Card Dialog */}
-            <Dialog
-                open={zoomOpen}
-                onClose={() => setZoomOpen(false)}
-                fullScreen
-                PaperProps={{
-                    sx: {
-                        bgcolor: "rgba(0, 0, 0, 0.92)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        p: 0,
-                        m: 0,
-                    },
-                }}
-            >
-                {/* Close Button */}
-                <IconButton
-                    onClick={() => setZoomOpen(false)}
-                    sx={{
-                        position: "fixed",
-                        top: 12,
-                        right: 12,
-                        zIndex: 10,
-                        bgcolor: "rgba(255, 255, 255, 0.15)",
-                        color: "#FFFFFF",
-                        backdropFilter: "blur(4px)",
-                        "&:hover": { bgcolor: "rgba(255, 255, 255, 0.3)" },
+        <Box
+            sx={{
+                width: "100%",
+                maxWidth: 510,
+                borderRadius: "8px",
+                overflow: "hidden",
+                bgcolor: "#FFFFFF",
+                cursor: imgSrc && onZoom ? "pointer" : "default",
+            }}
+            onClick={() => imgSrc && onZoom && onZoom()}
+        >
+            {imgSrc ? (
+                <img
+                    src={imgSrc}
+                    alt="Digital Insurance Card"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
                     }}
-                >
-                    <CloseIcon />
-                </IconButton>
-
-                {/* Card Image — rotated to landscape on portrait mobile */}
-                {imgSrc && (
-                    <Box
-                        sx={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            p: 1,
-                            // On portrait screens (height > width), rotate the card 90° to fill the width
-                            "@media (orientation: portrait)": {
-                                "& > img": {
-                                    transform: "rotate(90deg)",
-                                    maxWidth: "100vh",
-                                    maxHeight: "100vw",
-                                    width: "auto",
-                                    height: "auto",
-                                },
-                            },
-                            // On landscape screens, just fill normally
-                            "@media (orientation: landscape)": {
-                                "& > img": {
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    width: "auto",
-                                    height: "auto",
-                                },
-                            },
-                        }}
-                    >
-                        <img
-                            src={imgSrc}
-                            alt="Digital Insurance Card Fullscreen"
-                            style={{
-                                display: "block",
-                                objectFit: "contain",
-                                borderRadius: "8px",
-                                boxShadow: "0 4px 30px rgba(0,0,0,0.5)",
-                            }}
-                        />
-                    </Box>
-                )}
-
-                {/* Hint Text */}
-                <Typography
-                    sx={{
-                        position: "fixed",
-                        bottom: 16,
-                        left: 0,
-                        right: 0,
-                        textAlign: "center",
-                        color: "rgba(255,255,255,0.5)",
-                        fontSize: "12px",
-                        fontWeight: 500,
-                        pointerEvents: "none",
-                    }}
-                >
-                    แตะที่ใดก็ได้เพื่อปิด
-                </Typography>
-            </Dialog>
-        </>
+                />
+            ) : (
+                <Box sx={{ width: "100%", height: 0, pb: "63.36%" }} />
+            )}
+        </Box>
     );
 };
 
@@ -343,6 +227,8 @@ const StudentSearch = () => {
     const [citizenId, setCitizenId] = useState<string>("");
     const [foundStudent, setFoundStudent] = useState<Student | null>(null);
     const [hasSearched, setHasSearched] = useState<boolean>(false);
+    const [zoomOpen, setZoomOpen] = useState(false);
+    const [zoomImgSrc, setZoomImgSrc] = useState<string>("");
 
     useEffect(() => {
         const urlCitizenId = searchParams.get("citizenId");
@@ -654,10 +540,40 @@ const StudentSearch = () => {
                     {hasSearched && foundStudent && (
                         <Box sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2, mt: 3 }}>
                             <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                                <CardPreview student={foundStudent} />
+                                <CardPreview
+                                    student={foundStudent}
+                                    onZoom={() => setZoomOpen(true)}
+                                    onImageReady={(src) => setZoomImgSrc(src)}
+                                />
                             </Box>
 
                             <Box sx={{ display: "flex", justifyContent: "center", gap: 6, py: 1 }}>
+                                {/* ปุ่มขยาย — ปุ่มแรก */}
+                                <Box
+                                    onClick={() => setZoomOpen(true)}
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            width: 32,
+                                            height: 32,
+                                            background: "linear-gradient(90deg, #25CFF2 0%, #0093FF 100%)",
+                                            borderRadius: "50%",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            mb: 0.5,
+                                        }}
+                                    >
+                                        <ZoomInIcon sx={{ color: "#FFFFFF", fontSize: 17 }} />
+                                    </Box>
+                                    <Typography sx={{ fontSize: "12px", fontWeight: 700 }}>ขยาย</Typography>
+                                </Box>
                                 <Box
                                     onClick={handleDownloadCard}
                                     sx={{
@@ -845,6 +761,99 @@ const StudentSearch = () => {
             </Box>
 
             <MobileFooter />
+
+            {/* Fullscreen Landscape Card Dialog */}
+            <Dialog
+                open={zoomOpen}
+                onClose={() => setZoomOpen(false)}
+                fullScreen
+                PaperProps={{
+                    sx: {
+                        bgcolor: "rgba(0, 0, 0, 0.92)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        p: 0,
+                        m: 0,
+                    },
+                }}
+            >
+                {/* Close Button */}
+                <IconButton
+                    onClick={() => setZoomOpen(false)}
+                    sx={{
+                        position: "fixed",
+                        top: 12,
+                        right: 12,
+                        zIndex: 10,
+                        bgcolor: "rgba(255, 255, 255, 0.15)",
+                        color: "#FFFFFF",
+                        backdropFilter: "blur(4px)",
+                        "&:hover": { bgcolor: "rgba(255, 255, 255, 0.3)" },
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+
+                {/* Card Image — rotated to landscape on portrait mobile */}
+                {zoomImgSrc && (
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            p: 1,
+                            "@media (orientation: portrait)": {
+                                "& > img": {
+                                    transform: "rotate(90deg)",
+                                    maxWidth: "100vh",
+                                    maxHeight: "100vw",
+                                    width: "auto",
+                                    height: "auto",
+                                },
+                            },
+                            "@media (orientation: landscape)": {
+                                "& > img": {
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    width: "auto",
+                                    height: "auto",
+                                },
+                            },
+                        }}
+                    >
+                        <img
+                            src={zoomImgSrc}
+                            alt="Digital Insurance Card Fullscreen"
+                            style={{
+                                display: "block",
+                                objectFit: "contain",
+                                borderRadius: "8px",
+                                boxShadow: "0 4px 30px rgba(0,0,0,0.5)",
+                            }}
+                        />
+                    </Box>
+                )}
+
+                {/* Hint Text */}
+                <Typography
+                    sx={{
+                        position: "fixed",
+                        bottom: 16,
+                        left: 0,
+                        right: 0,
+                        textAlign: "center",
+                        color: "rgba(255,255,255,0.5)",
+                        fontSize: "12px",
+                        fontWeight: 500,
+                        pointerEvents: "none",
+                    }}
+                >
+                    แตะที่ใดก็ได้เพื่อปิด
+                </Typography>
+            </Dialog>
         </Box>
     );
 };
