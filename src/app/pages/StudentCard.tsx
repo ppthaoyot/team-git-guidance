@@ -69,30 +69,30 @@ const StudentCard = () => {
 
         const xLeft = 80;
         setFont(15, true);
-        ctx.fillText(`เลขที่อ้างอิง : ${targetStudent.refNo}`, xLeft, 150);
+        ctx.fillText(`เลขที่อ้างอิง : ${targetStudent.refNo}`, xLeft, 145);
 
         setFont(15, true);
-        ctx.fillText(`ผู้ถือกรมธรรม์ : ${targetStudent.schoolName}`, xLeft, 192);
+        ctx.fillText(`ผู้ถือกรมธรรม์ : ${targetStudent.schoolName}`, xLeft, 180);
 
         setFont(15, true);
-        ctx.fillText(`ระดับการศึกษา : ${targetStudent.gradeLevel}`, xLeft, 234);
+        ctx.fillText(`ระดับการศึกษา : ${targetStudent.gradeLevel}`, xLeft, 215);
 
         setFont(15, true);
         ctx.fillText(
             `ชื่อผู้เอาประกัน : ${targetStudent.title}${targetStudent.firstName} ${targetStudent.lastName}`,
             xLeft,
-            276
+            250
         );
 
         setFont(15, true);
-        ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
+        ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 285);
 
         ctx.fillStyle = "#07518c";
         fillTextCentered(
             `วงเงินค่ารักษาพยาบาล : ${targetStudent.coverageLimit} บาท / ต่ออุบัติเหตุแต่ละครั้ง`,
             368,
             680,
-            21
+            27
         );
 
         fillTextCentered(
@@ -115,7 +115,7 @@ const StudentCard = () => {
         ctx.fillStyle = "#333333";
         ctx.textAlign = "left";
         setFont(11.5, true);
-        ctx.fillText(`บริษัทผู้รับประกัน : ${targetStudent.insurer}`, 36, 480);
+        ctx.fillText(`บริษัทผู้รับประกัน : ${targetStudent.insurer}`, 36, 488);
     };
 
     const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, targetStudent: Student) => {
