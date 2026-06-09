@@ -14,8 +14,8 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 
-import { searchStudents, Student } from "../modules/_common/mockStudentData";
-import { ensureSarabunFont } from "../modules/_common/canvasFontLoader";
+import { searchStudents, Student } from "../modules/student/mockStudentData";
+import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
 import MobileFooter from "../modules/_common/components/MobileFooter";
 
 const normalizeCitizenId = (value: string) => {

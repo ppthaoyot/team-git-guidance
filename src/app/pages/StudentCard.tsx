@@ -4,8 +4,8 @@ import { Box, Button } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import Swal from "sweetalert2";
 
-import { searchStudents, Student } from "../modules/_common/mockStudentData";
-import { ensureSarabunFont } from "../modules/_common/canvasFontLoader";
+import { searchStudents, Student } from "../modules/student/mockStudentData";
+import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
 import MobileFooter from "../modules/_common/components/MobileFooter";
 
 /**

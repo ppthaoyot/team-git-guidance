@@ -30,3 +30,6 @@ dev/*
 uat/*
 public/configuration.js
 public/config.json
+
+# Test output
+output/

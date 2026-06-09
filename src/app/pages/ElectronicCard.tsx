@@ -22,8 +22,8 @@ import { PageWrapper } from "../modules/_auth";
 import StandardDataTable from "../modules/_common/components/DataTable/StandardDataTable";
 import Swal from "sweetalert2";
 
-import { mockStudents, Student } from "../modules/_common/mockStudentData";
-import { ensureSarabunFont } from "../modules/_common/canvasFontLoader";
+import { mockStudents, Student } from "../modules/student/mockStudentData";
+import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
 
 /**
  * หน้าจอระบบจัดการบัตรประกันภัยอิเล็กทรอนิกส์สำหรับครูผู้ประสานงาน (Desktop View)
