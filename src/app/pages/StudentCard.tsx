@@ -66,7 +66,7 @@ const StudentCard = () => {
 
         const xLeft = 80;
         setFont(15, true);
-        ctx.fillText(`เลขอ้างอิง : ${targetStudent.refNo}`, xLeft, 150);
+        ctx.fillText(`เลขที่อ้างอิง : ${targetStudent.refNo}`, xLeft, 150);
 
         setFont(15, true);
         ctx.fillText(`ผู้ถือกรมธรรม์ : ${targetStudent.schoolName}`, xLeft, 192);
@@ -86,7 +86,7 @@ const StudentCard = () => {
 
         ctx.fillStyle = "#07518c";
         fillTextCentered(
-            `วงเงินค่ารักษาพยาบาล : ${targetStudent.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`,
+            `วงเงินค่ารักษาพยาบาล : ${targetStudent.coverageLimit} บาท / ต่ออุบัติเหตุแต่ละครั้ง`,
             368,
             680,
             21
@@ -94,20 +94,25 @@ const StudentCard = () => {
 
         fillTextCentered(
             `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${targetStudent.compensationOPDClinic} บาท OPD ${targetStudent.compensationOPDHospital} บาท IPD ${targetStudent.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
-            405,
+            400,
             720,
             12.5
         );
 
         ctx.fillStyle = "#000000";
         ctx.textAlign = "left";
-        setFont(14.5, true);
-        ctx.fillText(`วันที่มีผลบังคับ : ${targetStudent.effectiveDate}`, 180, 446);
-        ctx.fillText(`วันที่สิ้นสุด : ${targetStudent.expiryDate}`, 425, 446);
+        setFont(13, true);
+        fillTextCentered(
+            `วันที่มีผลบังคับ : ${targetStudent.effectiveDate}    วันที่สิ้นสุด : ${targetStudent.expiryDate}`,
+            440,
+            680,
+            13
+        );
 
         ctx.fillStyle = "#333333";
+        ctx.textAlign = "left";
         setFont(11.5, true);
-        ctx.fillText(`บริษัทผู้รับประกัน : ${targetStudent.insurer}`, 36, 498);
+        ctx.fillText(`บริษัทผู้รับประกัน : ${targetStudent.insurer}`, 36, 480);
     };
 
     const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, targetStudent: Student) => {

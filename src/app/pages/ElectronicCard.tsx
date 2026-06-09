@@ -231,19 +231,85 @@ const ElectronicCardPage = () => {
         };
     };
 
-    // ฟังก์ชันก๊อปปี้ลิงก์เพื่อแชร์ให้คนอื่นเปิดได้โดยตรง
-    const handleShare = () => {
-        const searchUrl = `${window.location.origin}${
-            import.meta.env.BASE_URL
-        }student/search?school=${encodeURIComponent(activeSchool)}`;
-        navigator.clipboard.writeText(searchUrl);
-        Swal.fire({
-            icon: "success",
-            title: "คัดลอกลิงก์เรียบร้อยแล้ว!",
-            text: "คุณสามารถส่งลิงก์นี้ต่อให้กับผู้ปกครองหรือนักเรียนเพื่อใช้ค้นหาบัตรได้ทันที",
-            timer: 2000,
-            showConfirmButton: false,
-        });
+    // ฟังก์ชันแชร์รูป QR Code (ไม่ใช่ URL)
+    const handleShare = async () => {
+        try {
+            Swal.fire({
+                title: "กำลังสร้างไฟล์รูปภาพ...",
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading(),
+            });
+
+            const img = new Image();
+            img.src = `${import.meta.env.BASE_URL}template-bg-qr-code.png`;
+            img.onload = async () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                const ctx = canvas.getContext("2d");
+
+                if (!ctx) {
+                    Swal.close();
+                    return;
+                }
+
+                await ensureSarabunFont();
+                ctx.drawImage(img, 0, 0);
+                ctx.font = "bold 42px 'Sarabun', sans-serif";
+                ctx.fillStyle = "#ffffff";
+                ctx.textAlign = "center";
+                ctx.fillText(activeSchool, canvas.width / 2, 405);
+
+                const qrImg = new Image();
+                qrImg.crossOrigin = "anonymous";
+                qrImg.src = qrCodeUrl;
+                qrImg.onload = async () => {
+                    const qrSize = 500;
+                    const qrX = (canvas.width - qrSize) / 2;
+                    ctx.drawImage(qrImg, qrX, 500, qrSize, qrSize);
+
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) {
+                            Swal.close();
+                            return;
+                        }
+                        const file = new File([blob], `QR_${activeSchool}.png`, { type: "image/png" });
+
+                        if (navigator.share && navigator.canShare?.({ files: [file] })) {
+                            Swal.close();
+                            await navigator.share({
+                                title: `QR Code - ${activeSchool}`,
+                                files: [file],
+                            });
+                        } else {
+                            const blobUrl = URL.createObjectURL(blob);
+                            const w = window.open(blobUrl, "_blank");
+                            if (!w) {
+                                const link = document.createElement("a");
+                                link.href = blobUrl;
+                                link.download = `QR_${activeSchool}.png`;
+                                link.click();
+                            }
+                            Swal.fire({
+                                icon: "info",
+                                title: "กดค้างที่รูปเพื่อบันทึก",
+                                text: "ระบบได้เปิดรูป QR Code ในหน้าต่างใหม่ กดค้างที่รูปเพื่อบันทึก",
+                                timer: 3000,
+                                showConfirmButton: false,
+                            });
+                        }
+                    }, "image/png");
+                };
+                qrImg.onerror = () => {
+                    Swal.fire({ icon: "error", title: "เกิดข้อผิดพลาด", text: "ไม่สามารถโหลด QR Code ได้" });
+                };
+            };
+            img.onerror = () => {
+                Swal.fire({ icon: "error", title: "เกิดข้อผิดพลาด", text: "ไม่สามารถโหลดพื้นหลังโปสเตอร์ได้" });
+            };
+        } catch {
+            // User cancelled
+        }
     };
 
     // --- การตั้งค่าคอลัมน์ของ StandardDataTable ---
@@ -633,7 +699,7 @@ const ElectronicCardPage = () => {
                         borderBottom: "1px solid #E0E0E0",
                     }}
                 >
-                    <Typography sx={{ fontSize: "24px", fontWeight: 500 }}>Gen QR Code</Typography>
+                    <Typography sx={{ fontSize: { xs: "18px", sm: "24px" }, fontWeight: 500 }}>QR Code</Typography>
                     <IconButton onClick={() => setQrModalOpen(false)} sx={{ color: "#9E9E9E" }}>
                         <CloseIcon sx={{ fontSize: 36 }} />
                     </IconButton>
@@ -655,14 +721,14 @@ const ElectronicCardPage = () => {
                             <Typography
                                 sx={{
                                     color: "#07518c",
-                                    fontSize: "28px",
+                                    fontSize: { xs: "18px", sm: "28px" },
                                     lineHeight: 1.25,
                                     fontWeight: 600,
                                 }}
                             >
                                 {activeSchool}
                             </Typography>
-                            <Typography sx={{ mt: 1, fontSize: "16px", fontWeight: 500 }}>
+                            <Typography sx={{ mt: 1, fontSize: { xs: "13px", sm: "16px" }, fontWeight: 500 }}>
                                 ตำบล{schoolDetails.subDistrict} อำเภอ{schoolDetails.district} จังหวัด
                                 {schoolDetails.province}
                             </Typography>
@@ -686,7 +752,7 @@ const ElectronicCardPage = () => {
                             )}
                         </Box>
 
-                        <Typography sx={{ fontSize: "16px", color: "#777777" }}>
+                        <Typography sx={{ fontSize: { xs: "13px", sm: "16px" }, color: "#777777" }}>
                             สแกน QR Code เพื่อดาวน์โหลดบัตรประกันนักเรียน
                         </Typography>
                     </Box>
@@ -701,9 +767,9 @@ const ElectronicCardPage = () => {
                         sx={{
                             borderRadius: "4px",
                             flex: 1,
-                            height: 48,
+                            height: { xs: 40, sm: 48 },
                             bgcolor: "#13A8E8",
-                            fontSize: "18px",
+                            fontSize: { xs: "14px", sm: "18px" },
                             "&:hover": { bgcolor: "#0C95D1" },
                         }}
                     >
@@ -716,10 +782,10 @@ const ElectronicCardPage = () => {
                         sx={{
                             borderRadius: "4px",
                             flex: 1,
-                            height: 48,
+                            height: { xs: 40, sm: 48 },
                             borderColor: "#007AC1",
                             color: "#007AC1",
-                            fontSize: "18px",
+                            fontSize: { xs: "14px", sm: "18px" },
                             "&:hover": { borderColor: "#005b90", bgcolor: "#F2FBFF" },
                         }}
                     >

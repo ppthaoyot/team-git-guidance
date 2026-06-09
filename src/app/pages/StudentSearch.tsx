@@ -81,31 +81,36 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
 
     const xLeft = 80;
     setFont(15, true);
-    ctx.fillText(`เลขอ้างอิง : ${student.refNo}`, xLeft, 150);
+    ctx.fillText(`เลขที่อ้างอิง : ${student.refNo}`, xLeft, 150);
     ctx.fillText(`ผู้ถือกรมธรรม์ : ${student.schoolName}`, xLeft, 192);
     ctx.fillText(`ระดับการศึกษา : ${student.gradeLevel}`, xLeft, 234);
     ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 276);
     ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
 
     ctx.fillStyle = "#07518c";
-    fillTextCentered(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 368, 680, 21);
+    fillTextCentered(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท / ต่ออุบัติเหตุแต่ละครั้ง`, 368, 680, 21);
 
     fillTextCentered(
         `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
-        405,
+        400,
         720,
         12.5
     );
 
     ctx.fillStyle = "#000000";
     ctx.textAlign = "left";
-    setFont(14.5, true);
-    ctx.fillText(`วันที่มีผลบังคับ : ${student.effectiveDate}`, 180, 446);
-    ctx.fillText(`วันที่สิ้นสุด : ${student.expiryDate}`, 425, 446);
+    setFont(13, true);
+    fillTextCentered(
+        `วันที่มีผลบังคับ : ${student.effectiveDate}    วันที่สิ้นสุด : ${student.expiryDate}`,
+        440,
+        680,
+        13
+    );
 
     ctx.fillStyle = "#333333";
+    ctx.textAlign = "left";
     setFont(11.5, true);
-    ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 498);
+    ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 480);
 };
 
 const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student: Student) => {
@@ -307,16 +312,21 @@ const StudentSearch = () => {
                     files: [file],
                 });
             } else {
-                // Fallback: ดาวน์โหลดรูปภาพแทน
-                const link = document.createElement("a");
-                link.href = zoomImgSrc;
-                link.download = `PA-Card-${foundStudent.firstName}.png`;
-                link.click();
+                // Fallback สำหรับ LINE / in-app browser: เปิดรูปใน tab ใหม่
+                const blobUrl = URL.createObjectURL(blob);
+                const w = window.open(blobUrl, "_blank");
+                if (!w) {
+                    // กรณี popup ถูก block — ดาวน์โหลดแทน
+                    const link = document.createElement("a");
+                    link.href = blobUrl;
+                    link.download = `PA-Card-${foundStudent.firstName}.png`;
+                    link.click();
+                }
                 Swal.fire({
                     icon: "info",
-                    title: "เบราว์เซอร์ไม่รองรับการแชร์ไฟล์",
-                    text: "ระบบได้ดาวน์โหลดรูปบัตรให้แล้ว",
-                    timer: 2500,
+                    title: "กดค้างที่รูปเพื่อบันทึก",
+                    text: "ระบบได้เปิดรูปบัตรในหน้าต่างใหม่ กดค้างที่รูปเพื่อบันทึกลงเครื่อง",
+                    timer: 3000,
                     showConfirmButton: false,
                 });
             }
