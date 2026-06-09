@@ -746,8 +746,8 @@ const ElectronicCardPage = () => {
 
                         <Box
                             sx={{
-                                width: 330,
-                                height: 330,
+                                width: 230,
+                                height: 230,
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",

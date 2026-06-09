@@ -646,7 +646,7 @@ const StudentSearch = () => {
                                     >
                                         <DownloadIcon sx={{ color: "#FFFFFF", fontSize: 17 }} />
                                     </Box>
-                                    <Typography sx={{ fontSize: "12px", fontWeight: 700 }}>บันทึกรูปบัตร</Typography>
+                                    <Typography sx={{ fontSize: "12px", fontWeight: 700 }}>บันทึก</Typography>
                                 </Box>
                                 <Box
                                     onClick={handleShareCard}
