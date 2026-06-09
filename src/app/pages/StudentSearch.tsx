@@ -65,6 +65,18 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
         ctx.font = `${isBold ? "bold" : "normal"} ${size}px 'Sarabun', sans-serif`;
     };
 
+    /** วาดข้อความโดยย่อ font อัตโนมัติถ้ากว้างเกิน maxWidth */
+    const fillTextFit = (text: string, x: number, y: number, maxWidth: number, baseFontSize: number, isBold = true) => {
+        setFont(baseFontSize, isBold);
+        let fontSize = baseFontSize;
+        while (ctx.measureText(text).width > maxWidth && fontSize > 8) {
+            fontSize -= 0.5;
+            setFont(fontSize, isBold);
+        }
+        ctx.fillText(text, x, y);
+        setFont(baseFontSize, isBold); // restore
+    };
+
     const xLeft = 80;
     setFont(15, true);
     ctx.fillText(`เลขอ้างอิง : ${student.refNo}`, xLeft, 150);
@@ -75,14 +87,14 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#07518c";
-    setFont(21, true);
-    ctx.fillText(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 419, 368);
+    fillTextFit(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 419, 368, 680, 21);
 
-    setFont(12.5, true);
-    ctx.fillText(
+    fillTextFit(
         `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
         419,
-        405
+        405,
+        720,
+        12.5
     );
 
     ctx.fillStyle = "#000000";
@@ -798,6 +810,7 @@ const StudentSearch = () => {
                 {/* Card Image — rotated to landscape on portrait mobile */}
                 {zoomImgSrc && (
                     <Box
+                        onClick={() => setZoomOpen(false)}
                         sx={{
                             width: "100%",
                             height: "100%",
