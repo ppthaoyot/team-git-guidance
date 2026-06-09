@@ -32,8 +32,12 @@ const PageWrapper = ({ title, children, disableBack = false }: PageWrapperProps)
                     Back
                 </Link>
             )}
-            <Typography variant="h5">{title}</Typography>
-            <Divider sx={{ my: 2 }} />
+            {title && (
+                <>
+                    <Typography variant="h5">{title}</Typography>
+                    <Divider sx={{ my: 2 }} />
+                </>
+            )}
             {children}
         </Paper>
     );

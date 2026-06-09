@@ -256,7 +256,16 @@ const ElectronicCardPage = () => {
                         <Typography
                             variant="body2"
                             color="primary"
-                            sx={{ fontWeight: "bold", textDecoration: "underline", cursor: "pointer" }}
+                            sx={{
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                cursor: "pointer",
+                                transition: "color 0.2s ease, text-decoration 0.2s ease",
+                                "&:hover": {
+                                    textDecoration: "underline",
+                                    color: "#0C95D1",
+                                },
+                            }}
                             onClick={() => {
                                 window.open(`${import.meta.env.BASE_URL}student/card/${student.citizenId}`, "_blank");
                             }}
@@ -296,16 +305,16 @@ const ElectronicCardPage = () => {
                     return (
                         <Box
                             sx={{
-                                minWidth: 120,
-                                height: 36,
+                                minWidth: 100,
+                                height: 28,
                                 px: 2,
-                                borderRadius: "6px",
-                                bgcolor: isPaid ? "#D9F6DD" : value === "ค้างชำระ" ? "#FFF3CD" : "#FFE0E0",
-                                color: isPaid ? "#3B8D49" : value === "ค้างชำระ" ? "#996C00" : "#B00020",
+                                borderRadius: "9999px",
+                                bgcolor: isPaid ? "#ECFDF5" : value === "ค้างชำระ" ? "#FFFBEB" : "#FEF2F2",
+                                color: isPaid ? "#059669" : value === "ค้างชำระ" ? "#D97706" : "#DC2626",
                                 display: "inline-flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "16px",
+                                fontSize: "14px",
                                 fontWeight: 600,
                             }}
                         >
@@ -331,14 +340,18 @@ const ElectronicCardPage = () => {
                             onClick={() => openQrModal(value)}
                             sx={{
                                 textTransform: "none",
-                                borderRadius: "4px",
+                                borderRadius: "6px",
                                 bgcolor: "#13A8E8",
-                                minWidth: 160,
-                                height: 45,
-                                fontSize: "17px",
+                                minWidth: 140,
+                                height: 38,
+                                fontSize: "15px",
                                 fontWeight: 500,
-                                boxShadow: "0px 2px 4px rgba(0,0,0,0.2)",
-                                "&:hover": { bgcolor: "#0C95D1" },
+                                boxShadow: "none",
+                                transition: "all 0.2s ease",
+                                "&:hover": {
+                                    bgcolor: "#0C95D1",
+                                    boxShadow: "0px 2px 4px rgba(12, 149, 209, 0.2)",
+                                },
                             }}
                         >
                             Gen QR Code
@@ -350,8 +363,8 @@ const ElectronicCardPage = () => {
     ];
 
     return (
-        <PageWrapper title="บัตรประกันภัยอิเล็กทรอนิกส์">
-            <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#F5F5F7", minHeight: "100vh" }}>
+        <PageWrapper title="">
+            <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#FFFFFF", minHeight: "100vh" }}>
                 <Paper
                     elevation={0}
                     sx={{
@@ -548,23 +561,39 @@ const ElectronicCardPage = () => {
                             sx={{
                                 "& .MuiPaper-root": {
                                     boxShadow: "none",
+                                    border: "1px solid #E2E8F0",
+                                    borderRadius: "8px",
+                                    overflow: "hidden",
                                 },
                                 "& .MuiTableCell-head": {
-                                    height: "43px",
-                                    fontSize: "16px",
-                                    fontWeight: 700,
-                                    bgcolor: "#007AC1 !important",
-                                    color: "#FFFFFF !important",
-                                    borderRight: "1px solid rgba(255,255,255,0.12)",
+                                    height: "50px",
+                                    fontSize: "15px",
+                                    fontWeight: 600,
+                                    bgcolor: "#F1F5F9 !important",
+                                    color: "#334155 !important",
+                                    borderRight: "none !important",
+                                    borderBottom: "1px solid #E2E8F0 !important",
+                                    px: 2,
                                 },
                                 "& .MuiTableCell-body": {
-                                    height: "94px",
-                                    fontSize: "16px",
-                                    color: "#111111",
-                                    borderBottom: "1px solid #D6D6D6",
+                                    height: "60px",
+                                    fontSize: "15px",
+                                    color: "#475569",
+                                    borderBottom: "1px solid #E2E8F0",
+                                    px: 2,
                                 },
                                 "& .MuiTableRow-root": {
                                     bgcolor: "#FFFFFF",
+                                    transition: "background-color 0.2s ease",
+                                    "&:hover": {
+                                        bgcolor: "#F8FAFC !important",
+                                    },
+                                    "&:nth-of-type(even)": {
+                                        bgcolor: "#FAFCFD",
+                                        "&:hover": {
+                                            bgcolor: "#F8FAFC !important",
+                                        },
+                                    },
                                 },
                                 "& .MuiTableFooter-root": {
                                     display: "none",
