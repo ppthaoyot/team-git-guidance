@@ -82,14 +82,14 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
 
     const xLeft = 80;
     setFont(15, true);
-    ctx.fillText(`เลขที่อ้างอิง : ${student.refNo}`, xLeft, 150);
-    ctx.fillText(`ผู้ถือกรมธรรม์ : ${student.schoolName}`, xLeft, 192);
-    ctx.fillText(`ระดับการศึกษา : ${student.gradeLevel}`, xLeft, 234);
-    ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 276);
-    ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
+    ctx.fillText(`เลขที่อ้างอิง : ${student.refNo}`, xLeft, 145);
+    ctx.fillText(`ผู้ถือกรมธรรม์ : ${student.schoolName}`, xLeft, 180);
+    ctx.fillText(`ระดับการศึกษา : ${student.gradeLevel}`, xLeft, 215);
+    ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 250);
+    ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 285);
 
     ctx.fillStyle = "#07518c";
-    fillTextCentered(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท / ต่ออุบัติเหตุแต่ละครั้ง`, 368, 680, 21);
+    fillTextCentered(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท / ต่ออุบัติเหตุแต่ละครั้ง`, 368, 680, 27);
 
     fillTextCentered(
         `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
@@ -111,7 +111,7 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
     ctx.fillStyle = "#333333";
     ctx.textAlign = "left";
     setFont(11.5, true);
-    ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 480);
+    ctx.fillText(`บริษัทผู้รับประกัน : ${student.insurer}`, 36, 488);
 };
 
 const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student: Student) => {
@@ -248,7 +248,6 @@ const StudentSearch = () => {
     const [zoomImgSrc, setZoomImgSrc] = useState<string>("");
     const [saveDialogOpen, setSaveDialogOpen] = useState(false);
     const [saveDialogSrc, setSaveDialogSrc] = useState("");
-    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     useEffect(() => {
         const urlCitizenId = searchParams.get("citizenId");
@@ -297,7 +296,6 @@ const StudentSearch = () => {
 
         if (isMobile && zoomImgSrc) {
             setSaveDialogSrc(zoomImgSrc);
-            setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
             setSaveDialogOpen(true);
             return;
         }
@@ -315,7 +313,6 @@ const StudentSearch = () => {
                 Swal.close();
                 if (isMobile) {
                     setSaveDialogSrc(dataUrl);
-                    setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
                     setSaveDialogOpen(true);
                 } else {
                     const link = document.createElement("a");
@@ -350,7 +347,6 @@ const StudentSearch = () => {
             } else {
                 // Fallback สำหรับ LINE / in-app browser หรือ browser ที่ไม่รองรับ Web Share ให้แสดงหน้าต่าง SaveImageDialog
                 setSaveDialogSrc(zoomImgSrc);
-                setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
                 setSaveDialogOpen(true);
             }
         } catch {
@@ -906,12 +902,7 @@ const StudentSearch = () => {
             </Dialog>
 
             {/* Save Image Fallback Dialog */}
-            <SaveImageDialog
-                open={saveDialogOpen}
-                onClose={() => setSaveDialogOpen(false)}
-                imageSrc={saveDialogSrc}
-                fileName={saveDialogFileName}
-            />
+            <SaveImageDialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)} imageSrc={saveDialogSrc} />
         </Box>
     );
 };
