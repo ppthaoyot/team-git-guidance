@@ -181,13 +181,19 @@ const ElectronicCardPage = () => {
 
         const img = new Image();
         img.src = `${import.meta.env.BASE_URL}template-bg-qr-code.png`;
-        img.onload = () => {
+        img.onload = async () => {
             const canvas = document.createElement("canvas");
             canvas.width = img.naturalWidth;
             canvas.height = img.naturalHeight;
             const ctx = canvas.getContext("2d");
 
             if (ctx) {
+                try {
+                    await document.fonts.load("bold 42px 'Sarabun'");
+                } catch (e) {
+                    console.warn("Failed to load Sarabun font for QR Poster", e);
+                }
+                await document.fonts?.ready;
                 ctx.drawImage(img, 0, 0);
 
                 ctx.font = "bold 42px 'Sarabun', sans-serif";

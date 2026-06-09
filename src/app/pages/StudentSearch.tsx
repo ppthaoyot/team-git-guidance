@@ -94,6 +94,16 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
 };
 
 const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student: Student) => {
+    try {
+        await document.fonts.load("bold 15px 'Sarabun'");
+        await document.fonts.load("normal 15px 'Sarabun'");
+        await document.fonts.load("bold 21px 'Sarabun'");
+        await document.fonts.load("bold 12.5px 'Sarabun'");
+        await document.fonts.load("bold 14.5px 'Sarabun'");
+        await document.fonts.load("bold 11.5px 'Sarabun'");
+    } catch (e) {
+        console.warn("Failed to load Sarabun font", e);
+    }
     await document.fonts?.ready;
     drawCard(ctx, img, student);
 };
@@ -311,7 +321,7 @@ const StudentSearch = () => {
                     width: "100%",
                     maxWidth: "560px",
                     px: 2,
-                    pt: hasSearched && foundStudent ? 6 : { xs: 23, sm: 28 },
+                    pt: hasSearched && foundStudent ? { xs: 3, sm: 6 } : { xs: 4, sm: 8 },
                     boxSizing: "border-box",
                     display: "flex",
                     flexDirection: "column",

@@ -94,6 +94,16 @@ const StudentCard = () => {
     };
 
     const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, targetStudent: Student) => {
+        try {
+            await document.fonts.load("bold 15px 'Sarabun'");
+            await document.fonts.load("normal 15px 'Sarabun'");
+            await document.fonts.load("bold 21px 'Sarabun'");
+            await document.fonts.load("bold 12.5px 'Sarabun'");
+            await document.fonts.load("bold 14.5px 'Sarabun'");
+            await document.fonts.load("bold 11.5px 'Sarabun'");
+        } catch (e) {
+            console.warn("Failed to load Sarabun font", e);
+        }
         await document.fonts?.ready;
         drawCard(ctx, img, targetStudent);
     };
