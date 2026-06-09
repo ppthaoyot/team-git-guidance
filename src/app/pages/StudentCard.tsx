@@ -51,22 +51,17 @@ const StudentCard = () => {
             ctx.font = `${isBold ? "bold" : "normal"} ${size}px 'Sarabun', sans-serif`;
         };
 
-        const fillTextFit = (
-            text: string,
-            x: number,
-            y: number,
-            maxWidth: number,
-            baseFontSize: number,
-            isBold = true
-        ) => {
+        const fillTextCentered = (text: string, y: number, maxWidth: number, baseFontSize: number, isBold = true) => {
             setFont(baseFontSize, isBold);
             let fontSize = baseFontSize;
             while (ctx.measureText(text).width > maxWidth && fontSize > 8) {
                 fontSize -= 0.5;
                 setFont(fontSize, isBold);
             }
+            const textWidth = ctx.measureText(text).width;
+            const x = (838 - textWidth) / 2;
+            ctx.textAlign = "left";
             ctx.fillText(text, x, y);
-            setFont(baseFontSize, isBold);
         };
 
         const xLeft = 80;
@@ -89,19 +84,16 @@ const StudentCard = () => {
         setFont(15, true);
         ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
 
-        ctx.textAlign = "center";
         ctx.fillStyle = "#07518c";
-        fillTextFit(
+        fillTextCentered(
             `วงเงินค่ารักษาพยาบาล : ${targetStudent.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`,
-            419,
             368,
             680,
             21
         );
 
-        fillTextFit(
+        fillTextCentered(
             `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${targetStudent.compensationOPDClinic} บาท OPD ${targetStudent.compensationOPDHospital} บาท IPD ${targetStudent.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
-            419,
             405,
             720,
             12.5

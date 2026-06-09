@@ -65,16 +65,18 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
         ctx.font = `${isBold ? "bold" : "normal"} ${size}px 'Sarabun', sans-serif`;
     };
 
-    /** วาดข้อความโดยย่อ font อัตโนมัติถ้ากว้างเกิน maxWidth */
-    const fillTextFit = (text: string, x: number, y: number, maxWidth: number, baseFontSize: number, isBold = true) => {
+    /** วาดข้อความกึ่งกลาง canvas โดยใช้ textAlign='left' + measureText (เลี่ยง iOS bug) */
+    const fillTextCentered = (text: string, y: number, maxWidth: number, baseFontSize: number, isBold = true) => {
         setFont(baseFontSize, isBold);
         let fontSize = baseFontSize;
         while (ctx.measureText(text).width > maxWidth && fontSize > 8) {
             fontSize -= 0.5;
             setFont(fontSize, isBold);
         }
+        const textWidth = ctx.measureText(text).width;
+        const x = (838 - textWidth) / 2; // canvas width = 838
+        ctx.textAlign = "left";
         ctx.fillText(text, x, y);
-        setFont(baseFontSize, isBold); // restore
     };
 
     const xLeft = 80;
@@ -85,13 +87,11 @@ const drawCard = (ctx: CanvasRenderingContext2D, img: HTMLImageElement, student:
     ctx.fillText(`ชื่อผู้เอาประกัน : ${fullName(student)}`, xLeft, 276);
     ctx.fillText(`ผู้บริหารโครงการ : บริษัท สยามสไมล์โบรกเกอร์ (ประเทศไทย) จำกัด`, xLeft, 318);
 
-    ctx.textAlign = "center";
     ctx.fillStyle = "#07518c";
-    fillTextFit(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 419, 368, 680, 21);
+    fillTextCentered(`วงเงินค่ารักษาพยาบาล : ${student.coverageLimit} บาท/ต่ออุบัติเหตุแต่ละครั้ง`, 368, 680, 21);
 
-    fillTextFit(
+    fillTextCentered(
         `(กรณีไม่เรียกร้องผลประโยชน์ค่ารักษาพยาบาล OPD อนามัย ${student.compensationOPDClinic} บาท OPD ${student.compensationOPDHospital} บาท IPD ${student.compensationIPD} บาท/ต่ออุบัติเหตุแต่ละครั้ง)`,
-        419,
         405,
         720,
         12.5
@@ -291,34 +291,38 @@ const StudentSearch = () => {
         drawCardToCanvas(foundStudent, () => Swal.close());
     };
 
-    const copyToClipboard = (url: string) => {
-        navigator.clipboard.writeText(url);
-        Swal.fire({
-            icon: "success",
-            title: "คัดลอกลิงก์แชร์เรียบร้อยแล้ว!",
-            timer: 1800,
-            showConfirmButton: false,
-        });
-    };
+    const handleShareCard = async () => {
+        if (!foundStudent || !zoomImgSrc) return;
 
-    const handleShareCard = () => {
-        if (!foundStudent) return;
-        const shareUrl = `${window.location.origin}${
-            import.meta.env.BASE_URL
-        }student/search?school=${encodeURIComponent(foundStudent.schoolName)}&citizenId=${foundStudent.citizenId}`;
+        try {
+            // แปลง dataURL เป็น Blob
+            const res = await fetch(zoomImgSrc);
+            const blob = await res.blob();
+            const file = new File([blob], `PA-Card-${foundStudent.firstName}.png`, { type: "image/png" });
 
-        if (navigator.share) {
-            navigator
-                .share({
+            // ตรวจสอบว่า browser รองรับ share files หรือไม่
+            if (navigator.share && navigator.canShare?.({ files: [file] })) {
+                await navigator.share({
                     title: `บัตรประกันภัย PA ของ ${foundStudent.firstName}`,
-                    text: `ตรวจสอบสิทธิ์บัตรประกันภัย PA ของ ${foundStudent.schoolName}`,
-                    url: shareUrl,
-                })
-                .catch(() => copyToClipboard(shareUrl));
-            return;
+                    files: [file],
+                });
+            } else {
+                // Fallback: ดาวน์โหลดรูปภาพแทน
+                const link = document.createElement("a");
+                link.href = zoomImgSrc;
+                link.download = `PA-Card-${foundStudent.firstName}.png`;
+                link.click();
+                Swal.fire({
+                    icon: "info",
+                    title: "เบราว์เซอร์ไม่รองรับการแชร์ไฟล์",
+                    text: "ระบบได้ดาวน์โหลดรูปบัตรให้แล้ว",
+                    timer: 2500,
+                    showConfirmButton: false,
+                });
+            }
+        } catch {
+            // User cancelled share
         }
-
-        copyToClipboard(shareUrl);
     };
 
     return (
