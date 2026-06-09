@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { searchStudents, Student } from "../modules/student/mockStudentData";
 import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
 import MobileFooter from "../modules/_common/components/MobileFooter";
+import { SaveImageDialog } from "../modules/_common/components";
 
 const normalizeCitizenId = (value: string) => {
     const normalized = value.replace(/[^a-zA-Z0-9]/g, "");
@@ -118,7 +119,7 @@ const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageEl
     drawCard(ctx, img, student);
 };
 
-const drawCardToCanvas = (student: Student, onComplete: () => void) => {
+const drawCardToCanvas = (student: Student, onComplete: (dataUrl: string) => void, onError?: () => void) => {
     const img = new Image();
     img.src = `${import.meta.env.BASE_URL}template-card.png`;
     img.onload = async () => {
@@ -127,19 +128,18 @@ const drawCardToCanvas = (student: Student, onComplete: () => void) => {
         canvas.height = 531;
         const ctx = canvas.getContext("2d");
 
-        if (!ctx) return;
+        if (!ctx) {
+            onError?.();
+            return;
+        }
 
         await drawCardWithFonts(ctx, img, student);
 
         const dataUrl = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.download = `PA_Card_${student.firstName}.png`;
-        link.href = dataUrl;
-        link.click();
-        onComplete();
+        onComplete(dataUrl);
     };
     img.onerror = () => {
-        onComplete();
+        onError?.();
         Swal.fire({
             icon: "error",
             title: "ดาวน์โหลดล้มเหลว",
@@ -246,6 +246,9 @@ const StudentSearch = () => {
     const [hasSearched, setHasSearched] = useState<boolean>(false);
     const [zoomOpen, setZoomOpen] = useState(false);
     const [zoomImgSrc, setZoomImgSrc] = useState<string>("");
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [saveDialogSrc, setSaveDialogSrc] = useState("");
+    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     useEffect(() => {
         const urlCitizenId = searchParams.get("citizenId");
@@ -287,13 +290,46 @@ const StudentSearch = () => {
 
     const handleDownloadCard = () => {
         if (!foundStudent) return;
+
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|LINE|FBAN|FBAV/i.test(
+            navigator.userAgent
+        );
+
+        if (isMobile && zoomImgSrc) {
+            setSaveDialogSrc(zoomImgSrc);
+            setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
+            setSaveDialogOpen(true);
+            return;
+        }
+
         Swal.fire({
             title: "กำลังเตรียมดาวน์โหลด...",
             text: "กรุณารอสักครู่",
             allowOutsideClick: false,
             didOpen: () => Swal.showLoading(),
         });
-        drawCardToCanvas(foundStudent, () => Swal.close());
+
+        drawCardToCanvas(
+            foundStudent,
+            (dataUrl) => {
+                Swal.close();
+                if (isMobile) {
+                    setSaveDialogSrc(dataUrl);
+                    setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
+                    setSaveDialogOpen(true);
+                } else {
+                    const link = document.createElement("a");
+                    link.download = `PA-Card-${foundStudent.firstName}.png`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            },
+            () => {
+                Swal.close();
+            }
+        );
     };
 
     const handleShareCard = async () => {
@@ -312,23 +348,10 @@ const StudentSearch = () => {
                     files: [file],
                 });
             } else {
-                // Fallback สำหรับ LINE / in-app browser: เปิดรูปใน tab ใหม่
-                const blobUrl = URL.createObjectURL(blob);
-                const w = window.open(blobUrl, "_blank");
-                if (!w) {
-                    // กรณี popup ถูก block — ดาวน์โหลดแทน
-                    const link = document.createElement("a");
-                    link.href = blobUrl;
-                    link.download = `PA-Card-${foundStudent.firstName}.png`;
-                    link.click();
-                }
-                Swal.fire({
-                    icon: "info",
-                    title: "กดค้างที่รูปเพื่อบันทึก",
-                    text: "ระบบได้เปิดรูปบัตรในหน้าต่างใหม่ กดค้างที่รูปเพื่อบันทึกลงเครื่อง",
-                    timer: 3000,
-                    showConfirmButton: false,
-                });
+                // Fallback สำหรับ LINE / in-app browser หรือ browser ที่ไม่รองรับ Web Share ให้แสดงหน้าต่าง SaveImageDialog
+                setSaveDialogSrc(zoomImgSrc);
+                setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
+                setSaveDialogOpen(true);
             }
         } catch {
             // User cancelled share
@@ -881,6 +904,14 @@ const StudentSearch = () => {
                     แตะที่ใดก็ได้เพื่อปิด
                 </Typography>
             </Dialog>
+
+            {/* Save Image Fallback Dialog */}
+            <SaveImageDialog
+                open={saveDialogOpen}
+                onClose={() => setSaveDialogOpen(false)}
+                imageSrc={saveDialogSrc}
+                fileName={saveDialogFileName}
+            />
         </Box>
     );
 };

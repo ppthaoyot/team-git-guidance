@@ -24,6 +24,7 @@ import Swal from "sweetalert2";
 
 import { mockStudents, Student } from "../modules/student/mockStudentData";
 import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
+import { SaveImageDialog } from "../modules/_common/components";
 
 /**
  * หน้าจอระบบจัดการบัตรประกันภัยอิเล็กทรอนิกส์สำหรับครูผู้ประสานงาน (Desktop View)
@@ -58,6 +59,9 @@ const ElectronicCardPage = () => {
         province: "",
     });
     const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [saveDialogSrc, setSaveDialogSrc] = useState("");
+    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     // ดึงข้อมูลเริ่มต้น
     useEffect(() => {
@@ -207,13 +211,26 @@ const ElectronicCardPage = () => {
                     ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
 
                     const dataUrl = canvas.toDataURL("image/png");
-                    const link = document.createElement("a");
-                    link.download = `QR_${activeSchool}.png`;
-                    link.href = dataUrl;
-                    link.click();
-                    Swal.close();
+
+                    const isMobile =
+                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|LINE|FBAN|FBAV/i.test(
+                            navigator.userAgent
+                        );
+                    if (isMobile) {
+                        Swal.close();
+                        setSaveDialogSrc(dataUrl);
+                        setSaveDialogFileName(`QR_${activeSchool}.png`);
+                        setSaveDialogOpen(true);
+                    } else {
+                        const link = document.createElement("a");
+                        link.download = `QR_${activeSchool}.png`;
+                        link.href = dataUrl;
+                        link.click();
+                        Swal.close();
+                    }
                 };
                 qrImg.onerror = () => {
+                    Swal.close();
                     Swal.fire({
                         icon: "error",
                         title: "เกิดข้อผิดพลาด",
@@ -223,6 +240,7 @@ const ElectronicCardPage = () => {
             }
         };
         img.onerror = () => {
+            Swal.close();
             Swal.fire({
                 icon: "error",
                 title: "เกิดข้อผิดพลาด",
@@ -282,33 +300,25 @@ const ElectronicCardPage = () => {
                                 files: [file],
                             });
                         } else {
-                            const blobUrl = URL.createObjectURL(blob);
-                            const w = window.open(blobUrl, "_blank");
-                            if (!w) {
-                                const link = document.createElement("a");
-                                link.href = blobUrl;
-                                link.download = `QR_${activeSchool}.png`;
-                                link.click();
-                            }
-                            Swal.fire({
-                                icon: "info",
-                                title: "กดค้างที่รูปเพื่อบันทึก",
-                                text: "ระบบได้เปิดรูป QR Code ในหน้าต่างใหม่ กดค้างที่รูปเพื่อบันทึก",
-                                timer: 3000,
-                                showConfirmButton: false,
-                            });
+                            const dataUrl = canvas.toDataURL("image/png");
+                            Swal.close();
+                            setSaveDialogSrc(dataUrl);
+                            setSaveDialogFileName(`QR_${activeSchool}.png`);
+                            setSaveDialogOpen(true);
                         }
                     }, "image/png");
                 };
                 qrImg.onerror = () => {
+                    Swal.close();
                     Swal.fire({ icon: "error", title: "เกิดข้อผิดพลาด", text: "ไม่สามารถโหลด QR Code ได้" });
                 };
             };
             img.onerror = () => {
+                Swal.close();
                 Swal.fire({ icon: "error", title: "เกิดข้อผิดพลาด", text: "ไม่สามารถโหลดพื้นหลังโปสเตอร์ได้" });
             };
         } catch {
-            // User cancelled
+            Swal.close();
         }
     };
 
@@ -793,6 +803,14 @@ const ElectronicCardPage = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Save Image Fallback Dialog */}
+            <SaveImageDialog
+                open={saveDialogOpen}
+                onClose={() => setSaveDialogOpen(false)}
+                imageSrc={saveDialogSrc}
+                fileName={saveDialogFileName}
+            />
         </PageWrapper>
     );
 };

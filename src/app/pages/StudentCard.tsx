@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { searchStudents, Student } from "../modules/student/mockStudentData";
 import { ensureSarabunFont } from "../modules/student/canvasFontLoader";
 import MobileFooter from "../modules/_common/components/MobileFooter";
+import { SaveImageDialog } from "../modules/_common/components";
 
 /**
  * หน้าจอแสดงบัตรประกันภัยอุบัติเหตุส่วนบุคคล (PA) แบบดิจิทัลสำหรับนักเรียน (Mobile Web View - Public Route)
@@ -21,6 +22,9 @@ const StudentCard = () => {
     const navigate = useNavigate();
     const [student, setStudent] = useState<Student | null>(null);
     const cardCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [saveDialogSrc, setSaveDialogSrc] = useState("");
+    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     // ดึงข้อมูลเมื่อ citizenId ใน URL เปลี่ยนแปลง
     useEffect(() => {
@@ -136,43 +140,26 @@ const StudentCard = () => {
 
     // ฟังก์ชันประมวลผลการวาดรายละเอียดลงบนบัตรเปล่าผ่าน Canvas และส่งออกดาวน์โหลดรูปภาพ
     const handleDownload = () => {
-        if (!student) return;
+        if (!student || !cardCanvasRef.current) return;
 
-        Swal.fire({
-            title: "กำลังเตรียมดาวน์โหลด...",
-            text: "กรุณารอซักครู่",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|LINE|FBAN|FBAV/i.test(
+            navigator.userAgent
+        );
+        const dataUrl = cardCanvasRef.current.toDataURL("image/png");
 
-        const img = new Image();
-        img.src = `${import.meta.env.BASE_URL}template-card.png`;
-        img.onload = async () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = 838;
-            canvas.height = 531;
-            const ctx = canvas.getContext("2d");
-            if (!ctx) return;
+        if (isMobile) {
+            setSaveDialogSrc(dataUrl);
+            setSaveDialogFileName(`PA_Card_${student.firstName}.png`);
+            setSaveDialogOpen(true);
+            return;
+        }
 
-            await drawCardWithFonts(ctx, img, student);
-
-            const dataUrl = canvas.toDataURL("image/png");
-            const link = document.createElement("a");
-            link.download = `PA_Card_${student.firstName}.png`;
-            link.href = dataUrl;
-            link.click();
-            Swal.close();
-        };
-        img.onerror = () => {
-            Swal.close();
-            Swal.fire({
-                icon: "error",
-                title: "ดาวน์โหลดล้มเหลว",
-                text: "ไม่สามารถโหลดรูปภาพพื้นหลังบัตรได้",
-            });
-        };
+        const link = document.createElement("a");
+        link.download = `PA_Card_${student.firstName}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     if (!student) return null;
@@ -261,6 +248,14 @@ const StudentCard = () => {
 
             {/* Mobile Footer */}
             <MobileFooter />
+
+            {/* Save Image Fallback Dialog */}
+            <SaveImageDialog
+                open={saveDialogOpen}
+                onClose={() => setSaveDialogOpen(false)}
+                imageSrc={saveDialogSrc}
+                fileName={saveDialogFileName}
+            />
         </Box>
     );
 };
