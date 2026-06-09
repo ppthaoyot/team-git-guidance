@@ -15,11 +15,17 @@ import Swal from "sweetalert2";
 import { searchStudents, Student } from "../modules/_common/mockStudentData";
 import MobileFooter from "../modules/_common/components/MobileFooter";
 
-const normalizeCitizenId = (value: string) => value.replace(/\D/g, "").slice(0, 13);
+const normalizeCitizenId = (value: string) => {
+    const normalized = value.replace(/[^a-zA-Z0-9]/g, "");
+    if (/^\d+$/.test(normalized)) {
+        return normalized.slice(0, 13);
+    }
+    return normalized.slice(0, 15).toUpperCase();
+};
 
 const formatCitizenId = (id: string) => {
     const digits = normalizeCitizenId(id);
-    if (digits.length !== 13) return id;
+    if (digits.length !== 13 || !/^\d+$/.test(digits)) return id;
     return `${digits.slice(0, 1)}-${digits.slice(1, 5)}-${digits.slice(5, 10)}-${digits.slice(10, 12)}-${digits.slice(
         12
     )}`;
@@ -146,7 +152,7 @@ const CardPreview = ({ student }: { student: Student }) => {
         <Box
             sx={{
                 width: "100%",
-                maxWidth: 440,
+                maxWidth: 510,
                 borderRadius: "8px",
                 overflow: "hidden",
                 bgcolor: "#FFFFFF",
@@ -303,7 +309,7 @@ const StudentSearch = () => {
             <Box
                 sx={{
                     width: "100%",
-                    maxWidth: "500px",
+                    maxWidth: "560px",
                     px: 2,
                     pt: hasSearched && foundStudent ? 6 : { xs: 23, sm: 28 },
                     boxSizing: "border-box",
@@ -354,9 +360,11 @@ const StudentSearch = () => {
                         fullWidth
                         variant="outlined"
                         placeholder="ค้นหาเลขบัตรประชาชน / Passport นักเรียน"
-                        value={citizenId.length === 13 ? formatCitizenId(citizenId) : citizenId}
+                        value={
+                            citizenId.length === 13 && /^\d+$/.test(citizenId) ? formatCitizenId(citizenId) : citizenId
+                        }
                         onChange={(e) => setCitizenId(normalizeCitizenId(e.target.value))}
-                        inputProps={{ inputMode: "numeric" }}
+                        inputProps={{ inputMode: "text" }}
                         sx={{
                             mb: 1.5,
                             "& .MuiOutlinedInput-root": {

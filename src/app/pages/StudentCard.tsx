@@ -173,7 +173,7 @@ const StudentCard = () => {
             <Box
                 sx={{
                     width: "100%",
-                    maxWidth: "480px",
+                    maxWidth: "540px",
                     px: 2,
                     pt: 6,
                     boxSizing: "border-box",
@@ -186,7 +186,7 @@ const StudentCard = () => {
                 <Box
                     sx={{
                         width: "100%",
-                        maxWidth: 440,
+                        maxWidth: 510,
                         borderRadius: "8px",
                         overflow: "hidden",
                     }}

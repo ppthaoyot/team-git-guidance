@@ -4,3 +4,48 @@
 html {
     scroll-behavior: smooth;
 }
+
+/* SweetAlert2 Modern Styling & Smooth Transitions */
+.swal2-popup {
+    font-family: 'Sarabun', sans-serif !important;
+    border-radius: 16px !important;
+    padding: 2rem 1.5rem !important;
+    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.swal2-title {
+    font-family: 'Sarabun', sans-serif !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #1A1A1A !important;
+}
+
+.swal2-html-container {
+    font-family: 'Sarabun', sans-serif !important;
+    font-size: 15px !important;
+    color: #555555 !important;
+    margin-top: 8px !important;
+}
+
+.swal2-confirm, .swal2-deny, .swal2-cancel {
+    font-family: 'Sarabun', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+.swal2-confirm:hover {
+    opacity: 0.9 !important;
+}
+
+/* Ensure smooth scale-up animation */
+.swal2-show {
+    animation: swal2-show 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.swal2-hide {
+    animation: swal2-hide 0.15s ease-in !important;
+}
