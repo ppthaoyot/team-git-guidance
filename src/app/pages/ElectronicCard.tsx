@@ -23,6 +23,7 @@ import StandardDataTable from "../modules/_common/components/DataTable/StandardD
 import Swal from "sweetalert2";
 
 import { mockStudents, Student } from "../modules/_common/mockStudentData";
+import { ensureSarabunFont } from "../modules/_common/canvasFontLoader";
 
 /**
  * หน้าจอระบบจัดการบัตรประกันภัยอิเล็กทรอนิกส์สำหรับครูผู้ประสานงาน (Desktop View)
@@ -188,12 +189,7 @@ const ElectronicCardPage = () => {
             const ctx = canvas.getContext("2d");
 
             if (ctx) {
-                try {
-                    await document.fonts.load("bold 42px 'Sarabun'");
-                } catch (e) {
-                    console.warn("Failed to load Sarabun font for QR Poster", e);
-                }
-                await document.fonts?.ready;
+                await ensureSarabunFont();
                 ctx.drawImage(img, 0, 0);
 
                 ctx.font = "bold 42px 'Sarabun', sans-serif";

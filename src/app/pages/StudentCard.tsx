@@ -5,6 +5,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import Swal from "sweetalert2";
 
 import { searchStudents, Student } from "../modules/_common/mockStudentData";
+import { ensureSarabunFont } from "../modules/_common/canvasFontLoader";
 import MobileFooter from "../modules/_common/components/MobileFooter";
 
 /**
@@ -94,17 +95,7 @@ const StudentCard = () => {
     };
 
     const drawCardWithFonts = async (ctx: CanvasRenderingContext2D, img: HTMLImageElement, targetStudent: Student) => {
-        try {
-            await document.fonts.load("bold 15px 'Sarabun'");
-            await document.fonts.load("normal 15px 'Sarabun'");
-            await document.fonts.load("bold 21px 'Sarabun'");
-            await document.fonts.load("bold 12.5px 'Sarabun'");
-            await document.fonts.load("bold 14.5px 'Sarabun'");
-            await document.fonts.load("bold 11.5px 'Sarabun'");
-        } catch (e) {
-            console.warn("Failed to load Sarabun font", e);
-        }
-        await document.fonts?.ready;
+        await ensureSarabunFont();
         drawCard(ctx, img, targetStudent);
     };
 
