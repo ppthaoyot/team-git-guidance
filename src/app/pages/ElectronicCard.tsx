@@ -783,7 +783,7 @@ const ElectronicCardPage = () => {
                             "&:hover": { bgcolor: "#0C95D1" },
                         }}
                     >
-                        ดาวน์โหลดรูปภาพ
+                        บันทึก
                     </Button>
                     <Button
                         variant="outlined"
