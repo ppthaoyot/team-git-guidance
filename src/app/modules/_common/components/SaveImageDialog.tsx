@@ -1,25 +1,14 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import DownloadIcon from "@mui/icons-material/Download";
 
 interface SaveImageDialogProps {
     open: boolean;
     onClose: () => void;
     imageSrc: string;
-    fileName: string;
 }
 
-export const SaveImageDialog: React.FC<SaveImageDialogProps> = ({ open, onClose, imageSrc, fileName }) => {
-    const handleDirectDownload = () => {
-        const link = document.createElement("a");
-        link.href = imageSrc;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
+export const SaveImageDialog: React.FC<SaveImageDialogProps> = ({ open, onClose, imageSrc }) => {
     return (
         <Dialog
             open={open}
@@ -102,34 +91,24 @@ export const SaveImageDialog: React.FC<SaveImageDialogProps> = ({ open, onClose,
                         lineHeight: 1.5,
                     }}
                 >
-                    💡 หากปุ่มดาวน์โหลดไม่ทำงาน (เช่น บน LINE หรือ Safari) ให้กดค้างที่รูปภาพด้านบนแล้วเลือก
-                    &quot;บันทึกรูปภาพ&quot; (Save Image) หรือ &quot;แชร์&quot; (Share)
+                    💡 กดค้างที่รูปภาพด้านบนแล้วเลือก &quot;บันทึกรูปภาพ&quot; (Save Image) หรือ &quot;แชร์&quot;
+                    (Share) เพื่อบันทึกรูปภาพลงในเครื่อง
                 </Typography>
             </DialogContent>
-            <DialogActions sx={{ p: 2, justifyContent: "space-between", gap: 1.5 }}>
+            <DialogActions sx={{ p: 2 }}>
                 <Button
                     onClick={onClose}
-                    variant="outlined"
-                    color="inherit"
-                    fullWidth
-                    sx={{ borderRadius: "8px", py: 1 }}
-                >
-                    ปิด
-                </Button>
-                <Button
-                    onClick={handleDirectDownload}
                     variant="contained"
-                    color="primary"
-                    startIcon={<DownloadIcon />}
                     fullWidth
                     sx={{
                         borderRadius: "8px",
-                        py: 1,
+                        py: 1.2,
                         bgcolor: "#07518c",
+                        fontWeight: "bold",
                         "&:hover": { bgcolor: "#053e6d" },
                     }}
                 >
-                    ดาวน์โหลดโดยตรง
+                    ปิดหน้าต่าง
                 </Button>
             </DialogActions>
         </Dialog>

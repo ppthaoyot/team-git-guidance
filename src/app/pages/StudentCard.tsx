@@ -24,7 +24,6 @@ const StudentCard = () => {
     const cardCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const [saveDialogOpen, setSaveDialogOpen] = useState(false);
     const [saveDialogSrc, setSaveDialogSrc] = useState("");
-    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     // ดึงข้อมูลเมื่อ citizenId ใน URL เปลี่ยนแปลง
     useEffect(() => {
@@ -149,7 +148,6 @@ const StudentCard = () => {
 
         if (isMobile) {
             setSaveDialogSrc(dataUrl);
-            setSaveDialogFileName(`PA_Card_${student.firstName}.png`);
             setSaveDialogOpen(true);
             return;
         }
@@ -250,12 +248,7 @@ const StudentCard = () => {
             <MobileFooter />
 
             {/* Save Image Fallback Dialog */}
-            <SaveImageDialog
-                open={saveDialogOpen}
-                onClose={() => setSaveDialogOpen(false)}
-                imageSrc={saveDialogSrc}
-                fileName={saveDialogFileName}
-            />
+            <SaveImageDialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)} imageSrc={saveDialogSrc} />
         </Box>
     );
 };

@@ -248,7 +248,6 @@ const StudentSearch = () => {
     const [zoomImgSrc, setZoomImgSrc] = useState<string>("");
     const [saveDialogOpen, setSaveDialogOpen] = useState(false);
     const [saveDialogSrc, setSaveDialogSrc] = useState("");
-    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     useEffect(() => {
         const urlCitizenId = searchParams.get("citizenId");
@@ -297,7 +296,6 @@ const StudentSearch = () => {
 
         if (isMobile && zoomImgSrc) {
             setSaveDialogSrc(zoomImgSrc);
-            setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
             setSaveDialogOpen(true);
             return;
         }
@@ -315,7 +313,6 @@ const StudentSearch = () => {
                 Swal.close();
                 if (isMobile) {
                     setSaveDialogSrc(dataUrl);
-                    setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
                     setSaveDialogOpen(true);
                 } else {
                     const link = document.createElement("a");
@@ -350,7 +347,6 @@ const StudentSearch = () => {
             } else {
                 // Fallback สำหรับ LINE / in-app browser หรือ browser ที่ไม่รองรับ Web Share ให้แสดงหน้าต่าง SaveImageDialog
                 setSaveDialogSrc(zoomImgSrc);
-                setSaveDialogFileName(`PA-Card-${foundStudent.firstName}.png`);
                 setSaveDialogOpen(true);
             }
         } catch {
@@ -906,12 +902,7 @@ const StudentSearch = () => {
             </Dialog>
 
             {/* Save Image Fallback Dialog */}
-            <SaveImageDialog
-                open={saveDialogOpen}
-                onClose={() => setSaveDialogOpen(false)}
-                imageSrc={saveDialogSrc}
-                fileName={saveDialogFileName}
-            />
+            <SaveImageDialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)} imageSrc={saveDialogSrc} />
         </Box>
     );
 };

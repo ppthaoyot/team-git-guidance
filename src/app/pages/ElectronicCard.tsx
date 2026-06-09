@@ -61,7 +61,6 @@ const ElectronicCardPage = () => {
     const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
     const [saveDialogOpen, setSaveDialogOpen] = useState(false);
     const [saveDialogSrc, setSaveDialogSrc] = useState("");
-    const [saveDialogFileName, setSaveDialogFileName] = useState("");
 
     // ดึงข้อมูลเริ่มต้น
     useEffect(() => {
@@ -219,7 +218,6 @@ const ElectronicCardPage = () => {
                     if (isMobile) {
                         Swal.close();
                         setSaveDialogSrc(dataUrl);
-                        setSaveDialogFileName(`QR_${activeSchool}.png`);
                         setSaveDialogOpen(true);
                     } else {
                         const link = document.createElement("a");
@@ -303,7 +301,6 @@ const ElectronicCardPage = () => {
                             const dataUrl = canvas.toDataURL("image/png");
                             Swal.close();
                             setSaveDialogSrc(dataUrl);
-                            setSaveDialogFileName(`QR_${activeSchool}.png`);
                             setSaveDialogOpen(true);
                         }
                     }, "image/png");
@@ -805,12 +802,7 @@ const ElectronicCardPage = () => {
             </Dialog>
 
             {/* Save Image Fallback Dialog */}
-            <SaveImageDialog
-                open={saveDialogOpen}
-                onClose={() => setSaveDialogOpen(false)}
-                imageSrc={saveDialogSrc}
-                fileName={saveDialogFileName}
-            />
+            <SaveImageDialog open={saveDialogOpen} onClose={() => setSaveDialogOpen(false)} imageSrc={saveDialogSrc} />
         </PageWrapper>
     );
 };
