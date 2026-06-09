@@ -100,18 +100,19 @@ const ElectronicCardPage = () => {
 
     const fieldSx = {
         width: { xs: "100%", lg: 365 },
-        height: 48,
+        height: 40,
         "& .MuiInputLabel-root": {
-            fontSize: "14px",
+            fontSize: "13px",
             color: "#9E9E9E",
             bgcolor: "#FFFFFF",
             px: 0.5,
+            top: "-4px",
         },
         "& .MuiSelect-select": {
-            fontSize: "18px",
+            fontSize: "14px",
             fontWeight: 400,
             color: "#212121",
-            py: "11px",
+            py: "8px",
         },
         "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "#BDBDBD",
@@ -258,6 +259,7 @@ const ElectronicCardPage = () => {
                             color="primary"
                             sx={{
                                 fontWeight: 600,
+                                fontSize: "14px",
                                 textDecoration: "none",
                                 cursor: "pointer",
                                 transition: "color 0.2s ease, text-decoration 0.2s ease",
@@ -267,7 +269,11 @@ const ElectronicCardPage = () => {
                                 },
                             }}
                             onClick={() => {
-                                window.open(`${import.meta.env.BASE_URL}student/card/${student.citizenId}`, "_blank");
+                                window.open(
+                                    `${import.meta.env.BASE_URL}student/card/${student.citizenId}`,
+                                    "_blank",
+                                    "noopener,noreferrer"
+                                );
                             }}
                         >
                             {value}
@@ -305,16 +311,16 @@ const ElectronicCardPage = () => {
                     return (
                         <Box
                             sx={{
-                                minWidth: 100,
-                                height: 28,
-                                px: 2,
+                                minWidth: 80,
+                                height: 24,
+                                px: 1.5,
                                 borderRadius: "9999px",
                                 bgcolor: isPaid ? "#ECFDF5" : value === "ค้างชำระ" ? "#FFFBEB" : "#FEF2F2",
                                 color: isPaid ? "#059669" : value === "ค้างชำระ" ? "#D97706" : "#DC2626",
                                 display: "inline-flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "14px",
+                                fontSize: "12px",
                                 fontWeight: 600,
                             }}
                         >
@@ -326,7 +332,7 @@ const ElectronicCardPage = () => {
         },
         {
             name: "schoolName",
-            label: "",
+            label: "QR Code",
             options: {
                 filter: false,
                 sort: false,
@@ -342,9 +348,9 @@ const ElectronicCardPage = () => {
                                 textTransform: "none",
                                 borderRadius: "6px",
                                 bgcolor: "#13A8E8",
-                                minWidth: 140,
-                                height: 38,
-                                fontSize: "15px",
+                                minWidth: 120,
+                                height: 32,
+                                fontSize: "13px",
                                 fontWeight: 500,
                                 boxShadow: "none",
                                 transition: "all 0.2s ease",
@@ -395,7 +401,7 @@ const ElectronicCardPage = () => {
                                     label="จังหวัด"
                                     value={selectedProvince}
                                     onChange={(e) => setSelectedProvince(e.target.value)}
-                                    sx={{ height: 48 }}
+                                    sx={{ height: 40 }}
                                 >
                                     <MenuItem value="">
                                         <em>ทั้งหมด</em>
@@ -415,7 +421,7 @@ const ElectronicCardPage = () => {
                                     label="อำเภอ"
                                     value={selectedDistrict}
                                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                                    sx={{ height: 48 }}
+                                    sx={{ height: 40 }}
                                 >
                                     <MenuItem value="">
                                         <em>ทั้งหมด</em>
@@ -435,7 +441,7 @@ const ElectronicCardPage = () => {
                                     label="ตำบล"
                                     value={selectedSubDistrict}
                                     onChange={(e) => setSelectedSubDistrict(e.target.value)}
-                                    sx={{ height: 48 }}
+                                    sx={{ height: 40 }}
                                 >
                                     <MenuItem value="">
                                         <em>ทั้งหมด</em>
@@ -455,7 +461,7 @@ const ElectronicCardPage = () => {
                                     label="สถานศึกษา"
                                     value={selectedPlan}
                                     onChange={(e) => setSelectedPlan(e.target.value)}
-                                    sx={{ height: 48 }}
+                                    sx={{ height: 40 }}
                                 >
                                     <MenuItem value="">
                                         <em>ทั้งหมด</em>
@@ -486,7 +492,7 @@ const ElectronicCardPage = () => {
                                     label="สถานะกรมธรรม์"
                                     value={selectedStatus}
                                     onChange={(e) => setSelectedStatus(e.target.value)}
-                                    sx={{ height: 48 }}
+                                    sx={{ height: 40 }}
                                 >
                                     <MenuItem value="">
                                         <em>ทั้งหมด</em>
@@ -505,20 +511,20 @@ const ElectronicCardPage = () => {
                                     display: "flex",
                                     width: { xs: "100%", lg: 365 },
                                     justifyContent: "flex-start",
-                                    height: 45,
+                                    height: 40,
                                 }}
                             >
                                 <Button
                                     variant="contained"
                                     onClick={handleSearch}
                                     sx={{
-                                        width: "100px",
-                                        height: "45px",
+                                        width: "90px",
+                                        height: "40px",
                                         backgroundColor: "#007AC1",
                                         "&:hover": {
                                             backgroundColor: "#005b90",
                                         },
-                                        fontSize: "18px",
+                                        fontSize: "15px",
                                         fontWeight: 700,
                                         color: "#FFFFFF",
                                         borderRadius: "4px",
@@ -566,8 +572,8 @@ const ElectronicCardPage = () => {
                                     overflow: "hidden",
                                 },
                                 "& .MuiTableCell-head": {
-                                    height: "50px",
-                                    fontSize: "15px",
+                                    height: "44px",
+                                    fontSize: "14px",
                                     fontWeight: 600,
                                     bgcolor: "#F1F5F9 !important",
                                     color: "#334155 !important",
@@ -576,8 +582,8 @@ const ElectronicCardPage = () => {
                                     px: 2,
                                 },
                                 "& .MuiTableCell-body": {
-                                    height: "60px",
-                                    fontSize: "15px",
+                                    height: "50px",
+                                    fontSize: "14px",
                                     color: "#475569",
                                     borderBottom: "1px solid #E2E8F0",
                                     px: 2,

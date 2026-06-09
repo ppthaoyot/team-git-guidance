@@ -517,11 +517,9 @@ const StudentSearch = () => {
                                         </Box>
                                     }
                                 />
-                                <DetailRow label="ประเภทแผน :" value={foundStudent.planType} />
                             </Box>
 
                             <Box sx={{ width: "100%", pt: 1 }}>
-                                <DetailRow label="ประเภทแผน" value={foundStudent.planType} />
                                 <Box
                                     onClick={() => setCoverageOpen(!coverageOpen)}
                                     sx={{
