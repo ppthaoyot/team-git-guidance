@@ -332,7 +332,7 @@ const ElectronicCardPage = () => {
         },
         {
             name: "schoolName",
-            label: "QR Code",
+            label: " ",
             options: {
                 filter: false,
                 sort: false,

@@ -405,6 +405,7 @@ const StudentSearch = () => {
                                 textAlign: "center",
                                 gap: 1,
                                 mt: 3,
+                                width: "100%",
                             }}
                         >
                             <Box
@@ -426,9 +427,97 @@ const StudentSearch = () => {
                             <Typography sx={{ fontWeight: 500, fontSize: "13px", color: "#707070" }}>
                                 กรุณาป้อนข้อมูลในช่องค้นหาด้านบน
                             </Typography>
-                            <Typography sx={{ fontWeight: 500, fontSize: "13px", color: "#707070" }}>
+                            <Typography sx={{ fontWeight: 500, fontSize: "13px", color: "#707070", mb: 2 }}>
                                 สามารถค้นหาด้วยเลขบัตรประชาชน / Passport นักเรียน
                             </Typography>
+
+                            <Paper
+                                variant="outlined"
+                                sx={{
+                                    p: 2,
+                                    width: "100%",
+                                    maxWidth: "400px",
+                                    borderColor: "#E2F2FF",
+                                    bgcolor: "#F9FCFF",
+                                    borderRadius: "8px",
+                                    textAlign: "left",
+                                }}
+                            >
+                                <Typography
+                                    sx={{
+                                        fontSize: "12px",
+                                        fontWeight: 700,
+                                        color: "#007AC1",
+                                        mb: 1.5,
+                                        textAlign: "center",
+                                    }}
+                                >
+                                    💡 ข้อมูลตัวอย่างสำหรับทดสอบระบบ (Mock Test Data)
+                                </Typography>
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                                    <Box
+                                        onClick={() => setCitizenId("7640543275347")}
+                                        sx={{
+                                            p: 1,
+                                            bgcolor: "#FFFFFF",
+                                            border: "1px solid #E2F2FF",
+                                            borderRadius: "6px",
+                                            cursor: "pointer",
+                                            transition: "all 0.2s",
+                                            "&:hover": {
+                                                borderColor: "#007AC1",
+                                                bgcolor: "rgba(19, 168, 232, 0.04)",
+                                            },
+                                        }}
+                                    >
+                                        <Typography sx={{ fontSize: "11px", fontWeight: 600, color: "#707070" }}>
+                                            เลขประจำตัวประชาชน (ด.ช. ธรณ์วัฒน์)
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                fontSize: "14px",
+                                                fontWeight: 700,
+                                                color: "#333333",
+                                                fontFamily: "monospace",
+                                            }}
+                                        >
+                                            7640543275347
+                                        </Typography>
+                                    </Box>
+                                    <Box
+                                        onClick={() => setCitizenId("AA1234567")}
+                                        sx={{
+                                            p: 1,
+                                            bgcolor: "#FFFFFF",
+                                            border: "1px solid #E2F2FF",
+                                            borderRadius: "6px",
+                                            cursor: "pointer",
+                                            transition: "all 0.2s",
+                                            "&:hover": {
+                                                borderColor: "#007AC1",
+                                                bgcolor: "rgba(19, 168, 232, 0.04)",
+                                            },
+                                        }}
+                                    >
+                                        <Typography sx={{ fontSize: "11px", fontWeight: 600, color: "#707070" }}>
+                                            หนังสือเดินทาง / Passport (ด.ช. ปีเตอร์)
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                fontSize: "14px",
+                                                fontWeight: 700,
+                                                color: "#333333",
+                                                fontFamily: "monospace",
+                                            }}
+                                        >
+                                            AA1234567
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                <Typography sx={{ fontSize: "11px", color: "#888888", mt: 1.5, textAlign: "center" }}>
+                                    คลิกที่กล่องเพื่อนำข้อมูลไปวางในช่องค้นหาอัตโนมัติ
+                                </Typography>
+                            </Paper>
                         </Box>
                     )}
 
