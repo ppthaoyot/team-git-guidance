@@ -133,7 +133,7 @@ const CodeBlock: React.FC<{ code: string }> = ({ code }) => {
                         "&:hover": { opacity: 1 },
                     }}
                 >
-                    {copied ? "คัดลอกแล้ว!" : "คัดลอก"}
+                    {copied ? "Copied!" : "Copy"}
                 </Button>
             </Box>
             <Box
@@ -526,15 +526,15 @@ const GitWorkflow: React.FC = () => {
         if (checklistProgress === 100) {
             Swal.fire({
                 icon: "success",
-                title: "ยอดเยี่ยม!",
-                text: "โค้ดของคุณพร้อมสำหรับการ Merge แล้ว! ส่งต่อไปยัง Reviewer ได้เลย",
+                title: "Excellent!",
+                text: "Your code is ready for Merge! Forward to the Reviewer now.",
                 confirmButtonColor: "#10B981",
             });
         } else {
             Swal.fire({
                 icon: "warning",
-                title: "ยังไม่ครบถ้วน",
-                text: `คุณพึ่งเช็คลิสต์ไปเพียง ${checkedCount}/${checklistItems.length} ข้อ โปรดตรวจสอบโค้ดให้ดีก่อนส่งตรวจสอบ`,
+                title: "Incomplete",
+                text: `You have only checked ${checkedCount}/${checklistItems.length} items. Please review your code thoroughly before submitting.`,
                 confirmButtonColor: "#F59E0B",
             });
         }
@@ -605,7 +605,7 @@ const GitWorkflow: React.FC = () => {
                             "&:hover": { bgcolor: colors.hoverBg },
                         }}
                     >
-                        กลับหน้าแรก
+                        Back to Home
                     </Button>
                     <Divider orientation="vertical" flexItem sx={{ mx: 1, display: { xs: "none", sm: "block" } }} />
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: 1 }}>
@@ -635,7 +635,7 @@ const GitWorkflow: React.FC = () => {
                     {/* Live Search */}
                     <TextField
                         size="small"
-                        placeholder="ค้นหาในแนวทางปฏิบัติ..."
+                        placeholder="Search in guide..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         InputProps={{
@@ -761,19 +761,19 @@ const GitWorkflow: React.FC = () => {
                                     textTransform: "uppercase",
                                 }}
                             >
-                                สารบัญนำทาง
+                                Table of Contents
                             </Typography>
                             <List dense sx={{ py: 0 }}>
                                 {[
                                     { key: "summary", label: "Summary สรุปสั้นๆ", icon: "bolt" },
-                                    { key: "goals", label: "1. เป้าหมายแนวทาง", icon: "track_changes" },
+                                    { key: "goals", label: "1. Goals & Objectives", icon: "track_changes" },
                                     { key: "strategy", label: "2. Branch Strategy", icon: "call_split" },
-                                    { key: "rules", label: "3. กติกาหลักของทีม", icon: "gavel" },
+                                    { key: "rules", label: "3. Team Rules", icon: "gavel" },
                                     { key: "daily", label: "4. Daily Workflows", icon: "today" },
                                     { key: "pr", label: "5. Pull Request Rules", icon: "rate_review" },
-                                    { key: "collab", label: "6. ร่วมมือระหว่างทีม A/B/C", icon: "groups" },
+                                    { key: "collab", label: "6. Cross-Team Collaboration", icon: "groups" },
                                     { key: "scaffold", label: "9-10. EF & API Codegen", icon: "code" },
-                                    { key: "faq", label: "15. ตอบคำถาม FAQ", icon: "help_outline" },
+                                    { key: "faq", label: "15. FAQ", icon: "help_outline" },
                                     { key: "commands", label: "16. Quick Git Commands", icon: "terminal" },
                                 ].map((item) => {
                                     const isActive = activeSection === item.key;
@@ -830,7 +830,7 @@ const GitWorkflow: React.FC = () => {
                                     lineHeight: 1.3,
                                 }}
                             >
-                                Git Workflow Practice สำหรับทีม Dev
+                                Git Workflow Practice for Dev Team
                             </Typography>
                             <Typography
                                 variant="subtitle1"
@@ -1803,34 +1803,35 @@ const GitWorkflow: React.FC = () => {
                                 16. Quick Reference Git Commands
                             </Typography>
                             <Typography paragraph sx={{ color: colors.textSecondary }}>
-                                รวมชุดคำสั่งฉุกเฉินและคำสั่งที่ใช้งานบ่อย คัดลอกไปรันบน Terminal ได้ทันที
+                                Collection of frequently used and emergency Git commands. Copy and run on your Terminal
+                                instantly.
                             </Typography>
 
                             <Grid container spacing={2}>
                                 {[
                                     {
-                                        title: "เริ่มต้นทำ Feature Branch",
+                                        title: "Start a Feature Branch",
                                         cmd: "git checkout develop\ngit pull --ff-only origin develop\ngit checkout -b feature/ABC-123-short-name",
                                     },
                                     {
-                                        title: "ซิงค์ดึงข้อมูลแบบ Rebase (Branch เดี่ยว)",
+                                        title: "Sync via Rebase (Solo Branch)",
                                         cmd: "git fetch origin\ngit rebase origin/develop",
                                     },
                                     {
-                                        title: "ซิงค์ดึงข้อมูลแบบ Merge (Branch กลุ่ม)",
+                                        title: "Sync via Merge (Shared Branch)",
                                         cmd: "git fetch origin\ngit merge origin/develop",
                                     },
                                     {
-                                        title: "อัปโหลดขึ้นเซิร์ฟเวอร์หลัก",
+                                        title: "Push to Remote",
                                         cmd: "git push origin feature/ABC-123-short-name",
                                     },
-                                    { title: "อัปโหลดทับหลัง Rebase (ปลอดภัย)", cmd: "git push --force-with-lease" },
-                                    { title: "เก็บพักงานด่วนชั่วคราว", cmd: "git stash\ngit stash pop" },
+                                    { title: "Force Push after Rebase (Safe)", cmd: "git push --force-with-lease" },
+                                    { title: "Stash Work Temporarily", cmd: "git stash\ngit stash pop" },
                                     {
-                                        title: "เลือกดึงเฉพาะบาง Commit มาใช้",
+                                        title: "Cherry-pick Specific Commits",
                                         cmd: "git checkout release/target-branch\ngit cherry-pick <commit-hash>",
                                     },
-                                    { title: "เลือก Add เฉพาะบางบรรทัด", cmd: "git add -p" },
+                                    { title: "Stage Specific Lines (Partial Add)", cmd: "git add -p" },
                                 ].map((ref) => (
                                     <Grid item xs={12} md={6} key={ref.title}>
                                         <Box
@@ -1867,15 +1868,15 @@ const GitWorkflow: React.FC = () => {
                                     mb: 1,
                                 }}
                             >
-                                🤝 ร่วมสร้างมาตรฐานให้ทีม Dev
+                                🤝 Building Standards Together
                             </Typography>
                             <Typography
                                 variant="body2"
                                 sx={{ color: colors.textSecondary, maxWidth: 600, mx: "auto", lineHeight: 1.6 }}
                             >
-                                การรักษามาตรฐานโค้ดไม่ใช่เรื่องของทูลส์ Git เท่านั้น
-                                แต่คือวินัยและสัญญาร่วมใจในการพัฒนาระบบร่วมกัน มาร่วมสร้างและลดความวุ่นวายตอน merge
-                                งานกันเถอะ!
+                                Maintaining code standards is not just about Git tools — it is about discipline and a
+                                shared commitment to building software together. Let us reduce merge chaos and build
+                                quality code as a team!
                             </Typography>
                         </Box>
                     </Box>
@@ -1890,16 +1891,16 @@ const GitWorkflow: React.FC = () => {
                     onClick={() => {
                         // Open simple list in custom sweetalert
                         Swal.fire({
-                            title: "สารบัญนำทาง",
+                            title: "Table of Contents",
                             html: `
                                 <div style="text-align: left; font-family: 'Prompt', sans-serif;">
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('summary-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">Summary สรุปสั้นๆ</button>
-                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('goals-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">1. เป้าหมายแนวทาง</button>
+                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('goals-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">1. Goals & Objectives</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('strategy-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">2. Branch Strategy</button>
-                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('rules-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">3. กติกาหลักของทีม</button>
+                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('rules-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">3. Team Rules</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('daily-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">4. Daily Workflows</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('pr-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">5. PR Practice</button>
-                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('collab-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">6. ร่วมมือระหว่างทีม</button>
+                                    <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('collab-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">6. Cross-Team Collaboration</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('scaffold-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">9-10. EF & API Codegen</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('faq-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">15. FAQ</button>
                                     <button class="swal2-confirm swal2-styled" onclick="window.scrollTo(0, document.getElementById('commands-section').offsetTop - 120); Swal.close();" style="width: 100%; margin: 4px 0; background-color: ${colors.accent};">16. Quick Commands</button>
@@ -1907,7 +1908,7 @@ const GitWorkflow: React.FC = () => {
                             `,
                             showConfirmButton: false,
                             showCancelButton: true,
-                            cancelButtonText: "ปิด",
+                            cancelButtonText: "Close",
                             customClass: {
                                 container: "custom-swal-container",
                             },

@@ -1,10 +1,8 @@
-import { PermissionList } from "../../Const";
 import BlankPage from "../pages/BlankPage";
-import ElectronicCardPage from "../pages/ElectronicCard";
 import { RouteMapType } from "./AuthRoutes";
 
 /**
- * Config ของ route ของ Project
+ * Config ของ route ของ Project (Protected Routes)
  *
  * รูปแบบของ Config นี้ จะมี ดังนี้
  * ```
@@ -22,21 +20,9 @@ import { RouteMapType } from "./AuthRoutes";
 
 const Routes: RouteMapType[] = [
     {
-        path: "/electronic-card",
-        title: "บัตรประกันภัยอิเล็กทรอนิกส์",
-        element: <ElectronicCardPage />,
-    },
-    {
         path: "/blank-page",
         title: "Blank Page",
         element: <BlankPage body="Blank Page" />,
-    },
-    {
-        path: "/test-permission",
-        title: "Test Page",
-        element: <BlankPage body="Test Permission" />,
-        permissions: [PermissionList.none],
-        condition: "AND",
     },
 ];
 

@@ -21,7 +21,9 @@ function App() {
                 {
                     path: "/unauthorized",
                     title: "Unauthorized",
-                    element: <NoticePage title="401 Unautorized" body="คุณไม่มีสิทธ์ เข้าถึงหน้านี้" />,
+                    element: (
+                        <NoticePage title="401 Unauthorized" body="You do not have permission to access this page" />
+                    ),
                 },
                 ...Routes,
             ],

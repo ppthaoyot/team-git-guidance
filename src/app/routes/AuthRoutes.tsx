@@ -3,8 +3,6 @@ import React from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import { PermissionList } from "../../Const";
 import { NoticePage, PermissionCondition, SigninCallback, SilentCallback } from "../modules/_auth";
-import StudentSearch from "../pages/StudentSearch";
-import StudentCard from "../pages/StudentCard";
 import GitWorkflow from "../pages/GitWorkflow";
 
 /**
@@ -91,21 +89,11 @@ export const AuthRoutes: RouteMapType[] = [
     {
         path: "/not-found",
         title: "Not Found",
-        element: <NoticePage title="404 Not Found" body="ไม่พบเพจที่คุณต้องการ" />,
-    },
-    {
-        path: "/student/search",
-        title: "ค้นหาบัตรประกัน PA นักเรียน",
-        element: <StudentSearch />,
-    },
-    {
-        path: "/student/card/:citizenId",
-        title: "บัตรประกันภัยอุบัติเหตุ",
-        element: <StudentCard />,
+        element: <NoticePage title="404 Not Found" body="Page not found" />,
     },
     {
         path: "/git-workflow",
-        title: "Git Workflow Practice สำหรับทีม Dev",
+        title: "Git Workflow Practice",
         element: <GitWorkflow />,
     },
 ];
