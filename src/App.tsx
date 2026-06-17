@@ -8,6 +8,7 @@ import Routes from "./app/routes/Routes";
 
 function App() {
     const queryClient = useQueryClient();
+    const githubPagesBase = window.location.pathname.split("/").filter(Boolean)[0];
 
     const CombineRouteConfig: RouteMapType[] = [
         ...AuthRoutes,
@@ -35,7 +36,7 @@ function App() {
     const routeObjects = CombineRouteConfig.map((route) => createRouteObject(route, queryClient));
 
     const router = createBrowserRouter(routeObjects, {
-        basename: window.location.hostname.includes("github.io") ? "/pa-student-card" : "/",
+        basename: window.location.hostname.includes("github.io") && githubPagesBase ? `/${githubPagesBase}` : "/",
     });
 
     return <RouterProvider router={router} />;

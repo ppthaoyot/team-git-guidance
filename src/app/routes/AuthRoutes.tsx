@@ -5,6 +5,7 @@ import { PermissionList } from "../../Const";
 import { NoticePage, PermissionCondition, SigninCallback, SilentCallback } from "../modules/_auth";
 import StudentSearch from "../pages/StudentSearch";
 import StudentCard from "../pages/StudentCard";
+import GitWorkflow from "../pages/GitWorkflow";
 
 /**
  * ใช้ในการกำหนด ข้อมูล ของ route
@@ -101,5 +102,10 @@ export const AuthRoutes: RouteMapType[] = [
         path: "/student/card/:citizenId",
         title: "บัตรประกันภัยอุบัติเหตุ",
         element: <StudentCard />,
+    },
+    {
+        path: "/git-workflow",
+        title: "Git Workflow Practice สำหรับทีม Dev",
+        element: <GitWorkflow />,
     },
 ];

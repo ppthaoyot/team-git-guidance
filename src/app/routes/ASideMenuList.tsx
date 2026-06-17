@@ -49,6 +49,7 @@ export const ASideMenuList = () => {
                     text="บัตรประกันภัยอิเล็กทรอนิกส์"
                     permissions={[]}
                 />
+                <MenuItem path="/git-workflow" icon="menu_book" text="Git Workflow Practice" permissions={[]} />
             </ASideMenuListContainer>
         </ASideMenuListDrawer>
     );

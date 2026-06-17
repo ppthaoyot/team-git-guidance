@@ -1,42 +1,53 @@
-# pa-student-card (ระบบค้นหาบัตรประกัน PA นักเรียน)
+# React TypeScript Template
 
-โปรเจกต์นี้ได้รับการพัฒนาขึ้นจาก **Siam Smile React TypeScript Template** เพื่อใช้เป็นระบบค้นหาและแสดงผลบัตรประกันภัยอุบัติเหตุส่วนบุคคล (PA) สำหรับนักเรียนออนไลน์
+Reusable React, TypeScript, and Vite template with Material UI, routing, authentication support, runtime configuration, shared form helpers, API conventions, and AI-agent instructions.
 
----
+## AI Agent Guide
 
-## 📂 คู่มือและคำแนะนำสำหรับนักพัฒนา (Developer Guides)
+This repository includes root-level instruction files for multiple AI coding tools:
 
-สำหรับข้อมูลโครงสร้างโค้ด สิทธิ์ในการเข้าใช้งาน Routing และขั้นตอนการติดตั้งแบบละเอียด สามารถศึกษาได้จากไฟล์คู่มือ:
-👉 **[อ่านคู่มือพัฒนาที่นี่ (project_instruction.md)](./project_instruction.md)**
+- `AGENTS.md` - canonical instructions for AI agents.
+- `CLAUDE.md` - Claude-specific entrypoint.
+- `GEMINI.md` - Gemini-specific entrypoint.
+- `SKILL.md` - reusable skill-style summary.
 
----
+Recommended root directory: use the repository root, identified by `package.json`, `vite.config.ts`, `src/`, and `public/`. Do not depend on the local folder name.
 
-## 🛠️ เครื่องมือช่วยรันโปรเจกต์ (Developer Skills & Tools)
+## Quick Start
 
-โปรเจกต์นี้มีการติดตั้งเครื่องมืออำนวยความสะดวกสำหรับนักพัฒนาและ AI Agent ไว้ที่โฟลเดอร์หลัก:
+```bash
+npm install
+npm start
+```
 
-1. **PowerShell Developer CLI**:
-   * รันไฟล์สคริปต์ **`.\dev-cmd.ps1`** บน PowerShell เพื่อเปิดเมนูเรียกใช้คำสั่งด่วน (รันเซิร์ฟเวอร์, เจนโค้ด API, รันตรวจโค้ด หรือ Build)
-2. **VS Code Automation Tasks**:
-   * ไฟล์ **`.vscode/tasks.json`** จัดเตรียม Task รันด่วนผ่าน Command Palette ของ VS Code (กด `Ctrl+Shift+P` -> เลือก `Run Task`)
+The Vite development server runs locally using the port configured by Vite or the environment.
 
----
+## Common Commands
 
-## 🚀 ขั้นตอนการติดตั้งและรันด่วน (Quick Start)
+```bash
+npm run start:uat
+npm run lint
+npm run lint:fix
+npm run build
+npm run build:dev
+npm run build:uat
+npm run build:prod
+npm run codegen
+npm run serve
+```
 
-1. เปิด Terminal ในโฟลเดอร์โปรเจกต์
-2. ติดตั้งแพ็คเกจ:
-   ```bash
-   npm install
-   ```
-3. รันระบบในโหมดพัฒนา:
-   ```bash
-   npm start
-   ```
-   *ระบบจะเปิดเซิร์ฟเวอร์โลคอลที่ [http://localhost:3000](http://localhost:3000)*
+## Project Layout
 
----
+- `src/` - application source code.
+- `src/app/pages/` - route-level pages.
+- `src/app/routes/` - public and protected route definitions.
+- `src/app/modules/_auth/` - authentication and authorization.
+- `src/app/modules/_common/` - shared components, helpers, validators, alerts, and types.
+- `src/app/layout/` - application shell, menu, and theme.
+- `src/redux/` - Redux store setup.
+- `public/` - static files and runtime configuration output.
+- `docs/` - reference material and template documentation.
 
-## 📦 เอกสารอ้างอิงและไฟล์ต้นฉบับ (Archive & Reference docs)
-* ไฟล์ต้นฉบับเทมเพลต และภาพสกรีนช็อตดีไซน์จาก Figma ถูกจัดเก็บอย่างเป็นระเบียบไว้ภายใต้โฟลเดอร์:
-  👉 **`docs/reference/`**
+## Template Notes
+
+Keep template-level documentation generic. Add project-specific business names, domains, assets, and workflows only inside the consuming project when they are needed.

@@ -49,9 +49,9 @@ Write-Host "Committing mobile search..." -ForegroundColor Cyan
 git add src/app/pages/StudentSearch.tsx src/app/routes/AuthRoutes.tsx
 git commit -m "feat: implement mobile student search form and benefits overview"
 
-Write-Host "Committing mobile digital card..." -ForegroundColor Cyan
+Write-Host "Committing mobile digital view..." -ForegroundColor Cyan
 git add src/app/pages/StudentCard.tsx public/template-card.png public/template-bg-qr-code.png
-git commit -m "feat: implement mobile digital PA card view with canvas download"
+git commit -m "feat: implement mobile digital view with canvas download"
 
 Write-Host "Committing reference docs..." -ForegroundColor Cyan
 git add docs/

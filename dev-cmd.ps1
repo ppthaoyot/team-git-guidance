@@ -1,7 +1,7 @@
-# Siam Smile Project Development CLI helper
+# Project Development CLI helper
 Clear-Host
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host " Siam Smile PA Card Project Developer CLI " -ForegroundColor Cyan
+Write-Host " React TypeScript Template Developer CLI " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "1. Start Development Server (npm start)"
 Write-Host "2. Generate API Clients (npm run codegen)"

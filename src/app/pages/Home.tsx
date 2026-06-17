@@ -6,6 +6,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import Swal from "sweetalert2";
 
 const Home = () => {
@@ -100,7 +101,7 @@ const Home = () => {
 
                 {/* Quick Navigation Cards */}
                 <Grid container spacing={3} sx={{ mb: 4 }}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <Card
                             sx={{
                                 height: "100%",
@@ -171,7 +172,7 @@ const Home = () => {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <Card
                             sx={{
                                 height: "100%",
@@ -238,6 +239,77 @@ const Home = () => {
                                     }}
                                 >
                                     ไปหน้าค้นหาบัตร
+                                </Button>
+                            </Box>
+                        </Card>
+                    </Grid>
+
+                    <Grid item xs={12} md={4}>
+                        <Card
+                            sx={{
+                                height: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-between",
+                                borderRadius: "12px",
+                                border: "1px solid #E2F2FF",
+                                boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.04)",
+                                transition: "all 0.3s ease",
+                                "&:hover": {
+                                    transform: "translateY(-4px)",
+                                    boxShadow: "0px 8px 24px rgba(0, 122, 193, 0.12)",
+                                    borderColor: "#007AC1",
+                                },
+                            }}
+                        >
+                            <CardContent sx={{ p: 3 }}>
+                                <Box
+                                    sx={{
+                                        width: 48,
+                                        height: 48,
+                                        borderRadius: "10px",
+                                        bgcolor: "#E2F2FF",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        color: "#007AC1",
+                                        mb: 2,
+                                    }}
+                                >
+                                    <MenuBookIcon sx={{ fontSize: 28 }} />
+                                </Box>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: 700,
+                                        mb: 1,
+                                        color: "#2B2B2B",
+                                        fontFamily: "'Sarabun', sans-serif",
+                                    }}
+                                >
+                                    Git Workflow Practice สำหรับทีม
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: "#707070", lineHeight: 1.6 }}>
+                                    แนวทางการทำงานร่วมกันของทีมพัฒนาในการจัดการ Branch, ลดความซ้ำซ้อนของงาน การจัดการ EF
+                                    Scaffold / API Codegen และการเตรียมความพร้อมก่อนส่ง Pull Request
+                                </Typography>
+                            </CardContent>
+                            <Box sx={{ px: 3, pb: 3 }}>
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={() => navigate("/git-workflow")}
+                                    sx={{
+                                        bgcolor: "#007AC1",
+                                        color: "#FFFFFF",
+                                        textTransform: "none",
+                                        fontWeight: 600,
+                                        borderRadius: "8px",
+                                        py: 1,
+                                        "&:hover": { bgcolor: "#005E94" },
+                                    }}
+                                >
+                                    ไปหน้าแนวทางปฏิบัติ
                                 </Button>
                             </Box>
                         </Card>

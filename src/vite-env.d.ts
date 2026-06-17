@@ -56,9 +56,9 @@ export interface ImportMetaEnv {
      * URL ของเว็บไซต์ เปลี่ยนไปตาม Environment ที่เราต้องการ
      *
      * - .env.local (Local) ใช้ URL https://localhost:3000
-     * - .env.dev (Development) ใช้ URL https://*.devsiamsmile.com
-     * - .env.uat (UAT) ใช้ URL https://*.uatsiamsmile.com
-     * - .env (Production) ใช้ ๊URL https://*.siamsmile.co.th
+     * - .env.dev (Development) ใช้ Development base URL
+     * - .env.uat (UAT) ใช้ UAT base URL
+     * - .env (Production) ใช้ Production base URL
      */
     readonly VITE_BASE_URL: string;
 
@@ -66,19 +66,19 @@ export interface ImportMetaEnv {
      * URL ของ API
      *
      * - .env.local (Local) ใช้ URL https://localhost:3000
-     * - .env.dev (Development) ใช้ URL https://*.devsiamsmile.com
-     * - .env.uat (UAT) ใช้ URL https://*.uatsiamsmile.com
-     * - .env (Production) ใช้ ๊URL https://*.siamsmile.co.th
+     * - .env.dev (Development) ใช้ Development API URL
+     * - .env.uat (UAT) ใช้ UAT API URL
+     * - .env (Production) ใช้ Production API URL
      */
     readonly VITE_API_URL: string;
 
     /**
      * URL ของ API GATEWAY
      *
-     * - .env.local (Local) ใช้ URL https://api.devsiamsmile.com
-     * - .env.dev (Development) ใช้ URL https://api.devsiamsmile.com
-     * - .env.uat (UAT) ใช้ URL https://apigw.uatsiamsmile.com
-     * - .env (Production) ใช้ ๊URL https://apigw.siamsmile.co.th
+     * - .env.local (Local) ใช้ Local API gateway URL
+     * - .env.dev (Development) ใช้ Development API gateway URL
+     * - .env.uat (UAT) ใช้ UAT API gateway URL
+     * - .env (Production) ใช้ Production API gateway URL
      */
 
     readonly VITE_APIGW_BASEURL: string;
@@ -92,7 +92,7 @@ export interface ImportMetaEnv {
      *
      * และในไฟล์ .env ให้เพิ่ม
      *
-     * VITE_DEMOPOSAPI_URL=https://demoposapi.devsiamsmile.com
+     * VITE_EXAMPLE_API_URL=https://api.example.com
      */
 
     readonly VITE_DEMOPOSAPI_URL: string;
@@ -102,10 +102,10 @@ export interface ImportMetaEnv {
     /**
      * URL ของ Identity Server
      *
-     * - .env.local (Local) ใช้ URL https://demoauthserver.devsiamsmile.com
-     * - .env.dev (Development) ใช้ URL https://demoauthserver.devsiamsmile.com
-     * - .env.uat (UAT) ใช้ URL https://authlogin.uatsiamsmile.com
-     * - .env (Production) ใช้ ๊URL https://oauthlogin.siamsmile.co.th
+     * - .env.local (Local) ใช้ Local identity server URL
+     * - .env.dev (Development) ใช้ Development identity server URL
+     * - .env.uat (UAT) ใช้ UAT identity server URL
+     * - .env (Production) ใช้ Production identity server URL
      */
     readonly VITE_SSO_ISSUER: string;
 
