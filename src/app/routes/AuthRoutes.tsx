@@ -1,9 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import React from "react";
-import { Navigate, RouteObject } from "react-router-dom";
+import { RouteObject } from "react-router-dom";
 import { PermissionList } from "../../Const";
-import { NoticePage, PermissionCondition, SigninCallback, SilentCallback } from "../modules/_auth";
-import GitWorkflow from "../pages/GitWorkflow";
+import { PermissionCondition, SigninCallback, SilentCallback } from "../modules/_auth";
 
 /**
  * ใช้ในการกำหนด ข้อมูล ของ route
@@ -75,7 +74,6 @@ export const createRouteObject = (route: RouteMapType, queryClient: QueryClient)
 };
 
 export const AuthRoutes: RouteMapType[] = [
-    { path: "/home", title: "Home", element: <Navigate to="/" /> },
     {
         path: "/signin-callback",
         title: "Signin Callback",
@@ -85,15 +83,5 @@ export const AuthRoutes: RouteMapType[] = [
         path: "/silent-callback",
         title: "Silent Callback",
         element: <SilentCallback />,
-    },
-    {
-        path: "/not-found",
-        title: "Not Found",
-        element: <NoticePage title="404 Not Found" body="Page not found" />,
-    },
-    {
-        path: "/git-workflow",
-        title: "Git Workflow Practice",
-        element: <GitWorkflow />,
     },
 ];

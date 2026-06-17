@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
     Box,
     Typography,
@@ -26,7 +26,7 @@ import {
     Alert,
     useMediaQuery,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import SearchIcon from "@mui/icons-material/Search";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
@@ -443,7 +443,6 @@ const HighlightText: React.FC<{ text: string; search: string }> = ({ text, searc
 };
 
 const GitWorkflow: React.FC = () => {
-    const navigate = useNavigate();
     const matchesLg = useMediaQuery("(min-width:1025px)");
 
     // States for Reading Customization
@@ -593,21 +592,6 @@ const GitWorkflow: React.FC = () => {
                 }}
             >
                 <Box sx={{ display: "flex", alignItems: "center", width: "100%", sm: "auto" }}>
-                    <Button
-                        startIcon={<ArrowBackIcon />}
-                        onClick={() => navigate("/")}
-                        sx={{
-                            color: colors.textSecondary,
-                            textTransform: "none",
-                            mr: 2,
-                            fontWeight: 600,
-                            fontFamily: "'Prompt', sans-serif",
-                            "&:hover": { bgcolor: colors.hoverBg },
-                        }}
-                    >
-                        Back to Home
-                    </Button>
-                    <Divider orientation="vertical" flexItem sx={{ mx: 1, display: { xs: "none", sm: "block" } }} />
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: 1 }}>
                         <MenuBookIcon sx={{ color: colors.accent }} />
                         <Typography
